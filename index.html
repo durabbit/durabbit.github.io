@@ -116,18 +116,51 @@
   .tl-dot{position:absolute;top:24px;width:20px;height:20px;border-radius:50%;background:var(--yellow-bright);border:4px solid var(--white);box-shadow:0 0 0 3px var(--coral);}
   .tl-item:nth-child(odd) .tl-dot{right:-10px;}
   .tl-item:nth-child(even) .tl-dot{left:-10px;}
+  /* mốc vô địch — highlight vàng + cúp */
+  .tl-card.champ{background:linear-gradient(135deg,var(--yellow-cream),var(--yellow-bright));box-shadow:0 10px 26px rgba(247,206,70,.5);position:relative;}
+  .tl-card.champ .yr{color:#b9892b;}
+  .tl-card.champ .trophy{position:absolute;top:-14px;right:-10px;font-size:1.8rem;filter:drop-shadow(0 3px 4px rgba(185,137,43,.5));animation:float 4s ease-in-out infinite;}
+  .tl-card.champ .ev{font-weight:600;}
+  /* mốc gia nhập GenG — viền coral nổi bật */
+  .tl-card.geng{background:linear-gradient(135deg,#fff,var(--pink-soft));box-shadow:0 10px 26px rgba(252,165,165,.5);border:2px solid var(--coral);position:relative;}
+  .tl-card.geng .badge-geng{display:inline-block;background:var(--coral);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:.7rem;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:8px;}
 
-  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px;}
-  .gphoto{aspect-ratio:3/4;border-radius:var(--r-md);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-deep);text-align:center;padding:14px;transition:.25s;cursor:pointer;box-shadow:var(--soft-sm);}
-  .gphoto:nth-child(6n+1){background:var(--coral);}
-  .gphoto:nth-child(6n+2){background:var(--yellow-bright);}
-  .gphoto:nth-child(6n+3){background:var(--pink-soft);}
-  .gphoto:nth-child(6n+4){background:var(--yellow-cream);}
-  .gphoto:nth-child(6n+5){background:var(--coral);}
-  .gphoto:nth-child(6n){background:var(--yellow-bright);}
-  .gphoto:hover{transform:translateY(-5px) scale(1.02);box-shadow:var(--soft);}
-  .gphoto .pe{font-size:2.4rem;margin-bottom:6px;}
-  .gphoto small{font-size:.74rem;font-weight:500;}
+  /* ===== GALLERY SLIDESHOW ===== */
+  .slideshow{max-width:620px;margin:0 auto;position:relative;}
+  .slide-frame{
+    position:relative;width:100%;aspect-ratio:4/3;border-radius:var(--r-lg);
+    overflow:hidden;box-shadow:var(--soft);background:var(--pink-soft);
+  }
+  .slide{
+    position:absolute;inset:0;opacity:0;transition:opacity .6s ease;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--ink-deep);text-align:center;padding:18px;
+  }
+  .slide.active{opacity:1;}
+  .slide img{width:100%;height:100%;object-fit:cover;}
+  .slide.placeholder:nth-child(odd){background:var(--coral);}
+  .slide.placeholder:nth-child(even){background:var(--yellow-bright);}
+  .slide .pe{font-size:2.8rem;margin-bottom:8px;}
+  .slide small{font-size:.8rem;font-weight:500;}
+  .slide-btn{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(255,253,251,.9);color:var(--coral);font-size:1.4rem;font-weight:700;
+    box-shadow:var(--soft-sm);display:flex;align-items:center;justify-content:center;
+    transition:.2s;line-height:1;
+  }
+  .slide-btn:hover{background:var(--white);transform:translateY(-50%) scale(1.1);}
+  .slide-btn.prev{left:12px;}
+  .slide-btn.next{right:12px;}
+  .slide-dots{display:flex;gap:8px;justify-content:center;margin-top:18px;}
+  .slide-dots button{
+    width:11px;height:11px;border-radius:50%;border:none;cursor:pointer;padding:0;
+    background:var(--pink-soft);transition:.2s;
+  }
+  .slide-dots button.active{background:var(--coral);transform:scale(1.25);}
+  @media(max-width:640px){
+    .slide-btn{width:38px;height:38px;font-size:1.2rem;}
+  }
 
   .fanwall{max-width:720px;margin:0 auto;}
   .fan-form{background:var(--white);padding:26px;border-radius:var(--r-lg);box-shadow:var(--soft);margin-bottom:30px;}
@@ -297,28 +330,50 @@
 
 <section id="timeline">
   <div class="wrap">
-    <div class="sec-head"><h2>The Journey 💫</h2><p>Duro's most memorable milestones</p></div>
+    <div class="sec-head"><h2>The Journey 💫</h2><p>Duro's road with Gen.G — 🏆 marks a championship title</p></div>
     <div class="timeline">
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">2021</div><div class="ev">Career begins with Liiv SANDBOX Youth at the KeSPA Cup 🌱</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">2023</div><div class="ev">2023 LCK CL Spring All-CL Team · 2023 ECEA Champion with BNK FearX 🏅</div></div></div>
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">Jun 30, 2024</div><div class="ev">LCK DEBUT with BNK FearX — stepping onto the big stage! 🎉</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">Nov 2024</div><div class="ev">Joins Gen.G, wearing new colors 🧡 · 3rd place KeSPA Cup 2024 🥉</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">2025</div><div class="ev">Runner-up at LCK Cup 2025 🥈</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">2026</div><div class="ev">LCK Cup 2026 Champion 🏆 · Contract extended through 2027 ✍️</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card geng"><div class="yr">Nov 2024</div><div class="ev">Joins <strong>Gen.G Esports</strong> — a new chapter begins 🧡</div><span class="badge-geng">🐰 NEW TEAM · GEN.G</span></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card champ"><span class="trophy">🏆</span><div class="yr">Jun 13, 2025</div><div class="ev">Champion · LCK 2025 Road to MSI 🥇</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card champ"><span class="trophy">🏆</span><div class="yr">Jul 12, 2025</div><div class="ev">Champion · MSI 2025 🥇</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card champ"><span class="trophy">🏆</span><div class="yr">Jul 20, 2025</div><div class="ev">Champion · Esports World Cup 2025 🥇</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card champ"><span class="trophy">🏆</span><div class="yr">Aug 31, 2025</div><div class="ev">Champion · LCK 2025 Rounds 3-5 (Legend Group) 🥇</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card champ"><span class="trophy">🏆</span><div class="yr">Sep 28, 2025</div><div class="ev">Champion · LCK 2025 Season Playoffs 🥇</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">Nov 1, 2025</div><div class="ev">3rd-4th place · Worlds 2025 🌍</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">Dec 8, 2025</div><div class="ev">13th-14th · KeSPA Cup 2025</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card champ"><span class="trophy">🏆</span><div class="yr">Mar 1, 2026</div><div class="ev">Champion · LCK Cup 2026 🥇</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">Mar 21, 2026</div><div class="ev">3rd-4th place · First Stand 2026</div></div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="yr">May 31, 2026</div><div class="ev">3rd place · LCK 2026 Rounds 1-2 🥉</div></div></div>
     </div>
   </div>
 </section>
 
 <section id="gallery">
   <div class="wrap">
-    <div class="sec-head"><h2>Photo Gallery 📸</h2><p>Swap these blocks with your favorite photos</p></div>
-    <div class="gallery">
-      <div class="gphoto"><div class="pe">🖼️</div><small>Photo 1</small></div>
-      <div class="gphoto"><div class="pe">📷</div><small>Photo 2</small></div>
-      <div class="gphoto"><div class="pe">🎮</div><small>Photo 3</small></div>
-      <div class="gphoto"><div class="pe">🏆</div><small>Photo 4</small></div>
-      <div class="gphoto"><div class="pe">🐰</div><small>Photo 5</small></div>
-      <div class="gphoto"><div class="pe">🐴</div><small>Photo 6</small></div>
+    <div class="sec-head"><h2>Photo Gallery 📸</h2><p>Swipe through Duro's moments</p></div>
+    <div class="slideshow">
+      <div class="slide-frame" id="slideFrame">
+        <!-- Khi có link .jpg trực tiếp, thay <div class="slide placeholder"> bằng:
+             <div class="slide"><img src="LINK_JPG" alt="Duro"></div> -->
+        <div class="slide active"><img src="https://live.staticflickr.com/65535/55206976670_3bac67ae3e_b.jpg" alt="Duro" loading="lazy"></div>
+        <div class="slide"><img src="https://live.staticflickr.com/65535/55302697303_e03a28754e_b.jpg" alt="Duro" loading="lazy"></div>
+        <div class="slide"><img src="https://live.staticflickr.com/65535/55235970249_bbed43b92e_b.jpg" alt="Duro" loading="lazy"></div>
+        <div class="slide"><img src="https://live.staticflickr.com/65535/55235970114_92d442e19a_b.jpg" alt="Duro" loading="lazy"></div>
+        <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
+        <button class="slide-btn next" onclick="moveSlide(1)">›</button>
+      </div>
+      <div class="slide-dots" id="slideDots"></div>
     </div>
   </div>
 </section>
@@ -399,16 +454,39 @@
   }
   tick(); setInterval(tick,1000);
 
-  const msgs = [];
+  /* ====== FAN WALL — lưu & đọc từ Google Sheet ====== */
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZgbNOCBvGIjZ8ZvtmibdUh0pPFm3mmWOQ_lqnMLB5o8afw18R6EDdRBib0aRX1VY8/exec';
+
+  let msgs = [];
+
   function addMsg(){
     const n = document.getElementById('fanName').value.trim() || 'Anonymous';
     const t = document.getElementById('fanMsg').value.trim();
     if(!t){ alert('Please write a little message 🎀'); return; }
-    msgs.unshift({n,t});
+
+    // hiện ngay trên giao diện cho mượt
+    msgs.unshift({name:n, message:t});
     document.getElementById('fanName').value='';
     document.getElementById('fanMsg').value='';
     render();
+
+    // gửi lên Google Sheet (chạy ngầm)
+    const url = SHEET_URL + '?name=' + encodeURIComponent(n) + '&message=' + encodeURIComponent(t);
+    fetch(url).catch(()=>{ /* lỗi mạng thì bỏ qua, lời chúc vẫn hiện tạm */ });
   }
+
+  function loadMsgs(){
+    fetch(SHEET_URL)
+      .then(r => r.json())
+      .then(data => {
+        if(Array.isArray(data)){
+          msgs = data.filter(x => x && x.message);
+          render();
+        }
+      })
+      .catch(()=>{ /* lỗi mạng thì giữ nguyên những gì đang có */ });
+  }
+
   function render(){
     const grid = document.getElementById('msgGrid');
     const note = document.getElementById('emptyNote');
@@ -417,11 +495,15 @@
     grid.innerHTML = msgs.map((m,i)=>`
       <div class="msg-card">
         <span class="hh">${hearts[i%hearts.length]}</span>
-        <div class="who">${esc(m.n)}</div>
-        <div class="txt">${esc(m.t)}</div>
+        <div class="who">${esc(m.name)}</div>
+        <div class="txt">${esc(m.message)}</div>
       </div>`).join('');
   }
-  function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  // tải lời chúc khi vào trang, rồi tự làm mới mỗi 30 giây
+  loadMsgs();
+  setInterval(loadMsgs, 30000);
 
   /* ====== CANDLES — light 10 per click (session only) ====== */
   let candleTotal = 0;
@@ -487,6 +569,32 @@
 
   // hiện lần đầu sau 4 giây, rồi cứ ~9 giây hiện một lần
   setTimeout(()=>{ showWish(); setInterval(showWish, 9000); }, 4000);
+
+  /* ====== GALLERY SLIDESHOW ====== */
+  let slideIdx = 0;
+  const slides = Array.from(document.querySelectorAll('#slideFrame .slide'));
+  const dotsBox = document.getElementById('slideDots');
+
+  // tạo chấm chỉ vị trí
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    if(i === 0) b.className = 'active';
+    b.onclick = () => goSlide(i);
+    dotsBox.appendChild(b);
+  });
+  const dots = Array.from(dotsBox.children);
+
+  function goSlide(i){
+    slides[slideIdx].classList.remove('active');
+    if(dots[slideIdx]) dots[slideIdx].classList.remove('active');
+    slideIdx = (i + slides.length) % slides.length;
+    slides[slideIdx].classList.add('active');
+    if(dots[slideIdx]) dots[slideIdx].classList.add('active');
+  }
+  function moveSlide(step){ goSlide(slideIdx + step); }
+
+  // tự chạy mỗi 5 giây
+  if(slides.length > 1){ setInterval(()=>moveSlide(1), 5000); }
 </script>
 </body>
 </html>
