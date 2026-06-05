@@ -218,6 +218,45 @@
   .candle-toast .t1{font-family:'Baloo 2';font-weight:800;font-size:1.15rem;color:var(--ink-deep);}
   .candle-toast .t2{font-size:.92rem;color:var(--ink-deep);margin-top:4px;}
 
+  /* ===== WISH BOARD (canvas) ===== */
+  .board-wrap{max-width:1080px;margin:0 auto;}
+  .board{
+    position:relative;width:100%;height:560px;border-radius:var(--r-lg);overflow:hidden;
+    background:
+      radial-gradient(circle at 20% 25%, rgba(252,225,154,.5), transparent 45%),
+      radial-gradient(circle at 80% 20%, rgba(252,165,165,.45), transparent 45%),
+      radial-gradient(circle at 60% 85%, rgba(251,220,220,.55), transparent 50%),
+      linear-gradient(160deg,#fff8f4,#fdeef0);
+    box-shadow:var(--soft);border:3px solid var(--white);
+  }
+  .board-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink);font-style:italic;opacity:.65;font-size:.95rem;text-align:center;padding:20px;}
+  .note{
+    position:absolute;width:150px;padding:14px 14px 16px;border-radius:14px;
+    box-shadow:0 8px 20px rgba(252,165,165,.3);
+    font-size:.82rem;color:var(--ink-deep);cursor:default;
+    transition:transform .3s ease,box-shadow .3s ease;
+    animation:noteFloat var(--dur,7s) ease-in-out infinite;
+  }
+  .note:hover{transform:scale(1.08) rotate(0deg)!important;box-shadow:0 14px 30px rgba(252,165,165,.5);z-index:20;}
+  .note .n-who{font-family:'Baloo 2';font-weight:700;font-size:.86rem;margin-bottom:4px;display:flex;align-items:center;gap:4px;}
+  .note .n-txt{line-height:1.4;word-break:break-word;max-height:84px;overflow:hidden;}
+  /* màu ombre hồng-vàng-trắng cho giấy nhớ */
+  .note.c0{background:linear-gradient(150deg,#FBDCDC,#FCE19A);}
+  .note.c1{background:linear-gradient(150deg,#FCE19A,#fffaf0);}
+  .note.c2{background:linear-gradient(150deg,#FCA5A5,#FBDCDC);}
+  .note.c3{background:linear-gradient(150deg,#fffaf0,#FBDCDC);}
+  .note.c4{background:linear-gradient(150deg,#F7CE46,#FCE19A);}
+  .note.c5{background:linear-gradient(150deg,#FBDCDC,#fff);}
+  @keyframes noteFloat{
+    0%,100%{transform:translateY(0) rotate(var(--rot,0deg));}
+    50%{transform:translateY(-12px) rotate(calc(var(--rot,0deg) + 1.5deg));}
+  }
+  .board-hint{text-align:center;color:var(--ink);font-size:.85rem;margin-top:16px;opacity:.85;}
+  @media(max-width:640px){
+    .board{height:480px;}
+    .note{width:120px;font-size:.76rem;padding:10px 10px 12px;}
+  }
+
   footer{text-align:center;padding:50px 20px 44px;background:var(--coral);border-radius:var(--r-lg) var(--r-lg) 0 0;margin-top:30px;}
   .foot-heart{font-size:1.6rem;letter-spacing:8px;margin-bottom:10px;}
   footer p{color:var(--white);font-size:.9rem;font-weight:500;}
@@ -274,6 +313,7 @@
       <a href="#gallery">Gallery</a>
       <a href="#candles">Candles</a>
       <a href="#fanwall">Fan Wall</a>
+      <a href="#board">Board</a>
     </div>
   </div>
 </nav>
@@ -409,6 +449,16 @@
   </div>
 </section>
 
+<section id="board">
+  <div class="wrap board-wrap">
+    <div class="sec-head"><h2>Wish Board 🗒️</h2><p>Every fan message becomes a note — let's fill the board for Duro!</p></div>
+    <div class="board" id="wishBoard">
+      <div class="board-empty" id="boardEmpty">The board is waiting for your wishes... 🐰💌</div>
+    </div>
+    <p class="board-hint">Notes drift gently — hover one to read it ✨</p>
+  </div>
+</section>
+
 <div class="wish-bubble" id="wishBubble">
   <div class="wb-who" id="wbWho"></div>
   <div class="wb-txt" id="wbTxt"></div>
@@ -455,7 +505,7 @@
   tick(); setInterval(tick,1000);
 
   /* ====== FAN WALL — lưu & đọc từ Google Sheet ====== */
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZgbNOCBvGIjZ8ZvtmibdUh0pPFm3mmWOQ_lqnMLB5o8afw18R6EDdRBib0aRX1VY8/exec';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxRRUWdYzs5nmmHvcf7hdTbDTXSKJgyB7hVoBovLuFkPuqMV4XIC2aJG7JR5xXOOZyU/exec';
 
   let msgs = [];
 
@@ -498,8 +548,63 @@
         <div class="who">${esc(m.name)}</div>
         <div class="txt">${esc(m.message)}</div>
       </div>`).join('');
+    renderBoard();
   }
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  /* ====== WISH BOARD — giấy nhớ trôi nổi ====== */
+  function renderBoard(){
+    const board = document.getElementById('wishBoard');
+    const empty = document.getElementById('boardEmpty');
+    if(!board) return;
+
+    // dùng tin fan; nếu chưa có thì dùng vài câu mặc định cho bảng đỡ trống
+    const fallback = (typeof defaultWishes !== 'undefined') ? defaultWishes : [];
+    const items = msgs.length ? msgs : fallback.map(w=>({name:w.n, message:w.t}));
+    if(empty) empty.style.display = items.length ? 'none' : 'flex';
+
+    const hearts = ['🐰','🐴','⭐','🎀','💛','🧸','🌸','🍓'];
+    const W = board.clientWidth, H = board.clientHeight;
+    const noteW = W < 640 ? 120 : 150, noteH = 130;
+
+    // tạo lưới ngầm để rải giấy nhớ không đè nhau quá nhiều
+    const cols = Math.max(2, Math.floor(W / (noteW + 16)));
+    const rows = Math.max(2, Math.floor(H / (noteH + 16)));
+    const cells = [];
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push({r,c});
+    // xáo trộn các ô
+    for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cells[i],cells[j]]=[cells[j],cells[i]]; }
+
+    board.querySelectorAll('.note').forEach(n=>n.remove());
+
+    items.slice(0, cells.length).forEach((m,i)=>{
+      const cell = cells[i];
+      const cellW = W/cols, cellH = H/rows;
+      // vị trí trong ô + lệch ngẫu nhiên nhẹ
+      let x = cell.c*cellW + (cellW-noteW)*Math.random();
+      let y = cell.r*cellH + (cellH-noteH)*Math.random();
+      x = Math.max(6, Math.min(x, W-noteW-6));
+      y = Math.max(6, Math.min(y, H-noteH-6));
+      const rot = (Math.random()*10-5).toFixed(1);
+      const dur = (6 + Math.random()*4).toFixed(1);
+      const delay = (Math.random()*4).toFixed(1);
+
+      const note = document.createElement('div');
+      note.className = 'note c' + (i % 6);
+      note.style.left = x+'px';
+      note.style.top = y+'px';
+      note.style.setProperty('--rot', rot+'deg');
+      note.style.setProperty('--dur', dur+'s');
+      note.style.animationDelay = delay+'s';
+      note.style.transform = 'rotate('+rot+'deg)';
+      note.innerHTML = '<div class="n-who">'+hearts[i%hearts.length]+' '+esc(m.name)+'</div>'
+                     + '<div class="n-txt">'+esc(m.message)+'</div>';
+      board.appendChild(note);
+    });
+  }
+  // vẽ lại bảng khi đổi kích thước cửa sổ
+  let boardTimer;
+  window.addEventListener('resize', ()=>{ clearTimeout(boardTimer); boardTimer=setTimeout(renderBoard, 300); });
 
   // tải lời chúc khi vào trang, rồi tự làm mới mỗi 30 giây
   loadMsgs();
