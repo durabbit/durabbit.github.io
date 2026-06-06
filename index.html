@@ -273,6 +273,8 @@
   .note.c3{background:linear-gradient(150deg,#fffaf0,#FBDCDC);}
   .note.c4{background:linear-gradient(150deg,#F7CE46,#FCE19A);}
   .note.c5{background:linear-gradient(150deg,#FBDCDC,#fff);}
+  .note.note-candle{background:linear-gradient(150deg,#FCE19A,#fff6d8);box-shadow:0 8px 20px rgba(247,206,70,.4);}
+  .note.note-candle .n-who{color:#b9892b;}
   @keyframes noteFloat{
     0%,100%{transform:translateY(0) rotate(var(--rot,0deg));}
     50%{transform:translateY(-12px) rotate(calc(var(--rot,0deg) + 1.5deg));}
@@ -594,14 +596,21 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
   /* ====== WISH BOARD — giấy nhớ trôi nổi ====== */
+  // tin thắp nến hiện lên board (mới nhất ở đầu). Vài tin mẫu cho board đỡ trống.
+  let candleNotes = [
+    {name:'A fan', message:'lit 10 candles 🕯️ · Road to MSI Round 4', candle:true},
+    {name:'Someone', message:'lit 10 candles 🕯️ · All the best wishes', candle:true}
+  ];
+
   function renderBoard(){
     const board = document.getElementById('wishBoard');
     const empty = document.getElementById('boardEmpty');
     if(!board) return;
 
-    // dùng tin fan; nếu chưa có thì dùng vài câu mặc định cho bảng đỡ trống
+    // gộp: tin fan + tin thắp nến; nếu chưa có gì thì dùng câu mặc định
     const fallback = (typeof defaultWishes !== 'undefined') ? defaultWishes : [];
-    const items = msgs.length ? msgs : fallback.map(w=>({name:w.n, message:w.t}));
+    const base = msgs.length ? msgs.slice() : fallback.map(w=>({name:w.n, message:w.t}));
+    const items = candleNotes.concat(base);   // tin nến mới nhất lên trước
     if(empty) empty.style.display = items.length ? 'none' : 'flex';
 
     const hearts = ['🐰','⭐','🎀','💛','🧸','🌸','🍓'];
@@ -631,14 +640,15 @@
       const delay = (Math.random()*4).toFixed(1);
 
       const note = document.createElement('div');
-      note.className = 'note c' + (i % 6);
+      note.className = 'note c' + (i % 6) + (m.candle ? ' note-candle' : '');
       note.style.left = x+'px';
       note.style.top = y+'px';
       note.style.setProperty('--rot', rot+'deg');
       note.style.setProperty('--dur', dur+'s');
       note.style.animationDelay = delay+'s';
       note.style.transform = 'rotate('+rot+'deg)';
-      note.innerHTML = '<div class="n-who">'+hearts[i%hearts.length]+' '+esc(m.name)+'</div>'
+      const badge = m.candle ? '🕯️' : hearts[i%hearts.length];
+      note.innerHTML = '<div class="n-who">'+badge+' '+esc(m.name)+'</div>'
                      + '<div class="n-txt">'+esc(m.message)+'</div>';
       board.appendChild(note);
     });
@@ -699,6 +709,10 @@
         document.getElementById('candleToastSub').textContent = 'Praying for: ' + prayText + ' 🕯️';
         toast.classList.add('show');
         lighting = false;
+        // hiện lên Wish Board
+        candleNotes.unshift({name:'A fan', message:'lit 10 candles 🕯️ · ' + prayText, candle:true});
+        if(candleNotes.length > 12) candleNotes.pop();
+        renderBoard();
         if(CANDLE_URL){
           const u = CANDLE_URL + '?icon=' + encodeURIComponent(selectedIcon)
                   + '&match=' + encodeURIComponent(prayText) + '&count=10';
