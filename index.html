@@ -39,18 +39,18 @@
   /* floating deco — dùng ảnh PNG thật, rải khắp trang */
   .deco{position:fixed;pointer-events:none;z-index:1;opacity:.9;}
   .deco img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 6px 10px rgba(252,165,165,.25));}
-  .deco.d1{width:80px;height:80px;top:12%;left:4%;animation:float 7s ease-in-out infinite;}
-  .deco.d2{width:90px;height:90px;top:30%;right:3%;animation:float 9s ease-in-out infinite reverse;}
-  .deco.d3{width:56px;height:56px;top:55%;left:5%;animation:float 8s ease-in-out infinite;}
-  .deco.d4{width:78px;height:78px;bottom:22%;right:5%;animation:float 6.5s ease-in-out infinite reverse;}
-  .deco.d5{width:60px;height:60px;top:73%;right:8%;animation:float 7.5s ease-in-out infinite;}
-  .deco.d6{width:64px;height:64px;bottom:10%;left:7%;animation:float 8.5s ease-in-out infinite reverse;}
-  .deco.d7{width:54px;height:54px;top:42%;left:8%;animation:float 6s ease-in-out infinite;}
+  .deco.d1{width:120px;height:120px;top:12%;left:4%;animation:float 7s ease-in-out infinite;}
+  .deco.d2{width:130px;height:130px;top:30%;right:3%;animation:float 9s ease-in-out infinite reverse;}
+  .deco.d3{width:80px;height:80px;top:55%;left:5%;animation:float 8s ease-in-out infinite;}
+  .deco.d4{width:115px;height:115px;bottom:22%;right:5%;animation:float 6.5s ease-in-out infinite reverse;}
+  .deco.d5{width:88px;height:88px;top:73%;right:8%;animation:float 7.5s ease-in-out infinite;}
+  .deco.d6{width:96px;height:96px;bottom:10%;left:7%;animation:float 8.5s ease-in-out infinite reverse;}
+  .deco.d7{width:80px;height:80px;top:42%;left:8%;animation:float 6s ease-in-out infinite;}
   @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(5deg)}}
   @media(max-width:640px){
     .deco.d2,.deco.d5,.deco.d7{display:none;} /* bớt deco trên mobile cho gọn */
-    .deco.d1{width:56px;height:56px;}
-    .deco.d3,.deco.d4,.deco.d6{width:46px;height:46px;}
+    .deco.d1{width:80px;height:80px;}
+    .deco.d3,.deco.d4,.deco.d6{width:64px;height:64px;}
   }
 
   /* cute puffy clouds drifting across the page */
@@ -70,11 +70,12 @@
   .hero-text{text-align:left;position:relative;}
   .hero-text .heart-row{justify-content:flex-start;}
   .kr-name{
-    display:inline-block;font-family:'Baloo 2';font-weight:800;font-size:2rem;
-    color:#fff;-webkit-text-stroke:5px var(--coral);paint-order:stroke fill;
-    text-shadow:0 4px 0 rgba(252,165,165,.4);
-    transform:rotate(-4deg);margin-top:-6px;margin-left:8px;
+    display:block;font-family:'Baloo 2';font-weight:800;font-size:3.2rem;
+    color:#fff;-webkit-text-stroke:6px var(--coral);paint-order:stroke fill;
+    text-shadow:0 5px 0 rgba(252,165,165,.4);
+    transform:rotate(-8deg);margin-top:2px;margin-left:18px;line-height:1;
   }
+  @media(max-width:760px){.kr-name{font-size:2.4rem;margin-left:0;text-align:center;}}
   @media(max-width:760px){
     .hero-grid{grid-template-columns:1fr;text-align:center;gap:24px;}
     .hero-text{text-align:center;}
@@ -158,41 +159,14 @@
   .tl-card.geng .badge-geng{display:inline-block;background:var(--coral);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:.7rem;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:8px;}
 
   /* ===== GALLERY SLIDESHOW ===== */
-  .slideshow{max-width:620px;margin:0 auto;position:relative;}
-  .slide-frame{
-    position:relative;width:100%;aspect-ratio:4/3;border-radius:var(--r-lg);
-    overflow:hidden;box-shadow:var(--soft);background:var(--pink-soft);
-  }
-  .slide{
-    position:absolute;inset:0;opacity:0;transition:opacity .6s ease;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    color:var(--ink-deep);text-align:center;padding:18px;
-  }
-  .slide.active{opacity:1;}
-  .slide img{width:100%;height:100%;object-fit:cover;}
-  .slide.placeholder:nth-child(odd){background:var(--coral);}
-  .slide.placeholder:nth-child(even){background:var(--yellow-bright);}
-  .slide .pe{font-size:2.8rem;margin-bottom:8px;}
-  .slide small{font-size:.8rem;font-weight:500;}
-  .slide-btn{
-    position:absolute;top:50%;transform:translateY(-50%);z-index:3;
-    width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
-    background:rgba(255,253,251,.9);color:var(--coral);font-size:1.4rem;font-weight:700;
-    box-shadow:var(--soft-sm);display:flex;align-items:center;justify-content:center;
-    transition:.2s;line-height:1;
-  }
-  .slide-btn:hover{background:var(--white);transform:translateY(-50%) scale(1.1);}
-  .slide-btn.prev{left:12px;}
-  .slide-btn.next{right:12px;}
-  .slide-dots{display:flex;gap:8px;justify-content:center;margin-top:18px;}
-  .slide-dots button{
-    width:11px;height:11px;border-radius:50%;border:none;cursor:pointer;padding:0;
-    background:var(--pink-soft);transition:.2s;
-  }
-  .slide-dots button.active{background:var(--coral);transform:scale(1.25);}
-  @media(max-width:640px){
-    .slide-btn{width:38px;height:38px;font-size:1.2rem;}
-  }
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:720px;margin:0 auto;}
+  .gphoto{aspect-ratio:4/3;border-radius:var(--r-sm);overflow:hidden;box-shadow:var(--soft-sm);transition:transform .25s,box-shadow .25s;background:var(--pink-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-deep);text-align:center;}
+  .gphoto img{width:100%;height:100%;object-fit:cover;display:block;}
+  .gphoto:hover{transform:translateY(-4px) scale(1.02);box-shadow:var(--soft);}
+  .gphoto.ph-wait:nth-child(odd){background:var(--yellow-cream);}
+  .gphoto .pe{font-size:1.6rem;margin-bottom:4px;}
+  .gphoto small{font-size:.7rem;font-weight:500;}
+  @media(max-width:640px){.gallery-grid{grid-template-columns:repeat(2,1fr);}}
 
   .fanwall{max-width:720px;margin:0 auto;}
   .fan-form{background:var(--white);padding:26px;border-radius:var(--r-lg);box-shadow:var(--soft);margin-bottom:30px;}
@@ -241,11 +215,31 @@
     100%{transform:scale(.96,1.05) rotate(-2deg);opacity:.95;}
   }
   .candle .stick{width:11px;height:30px;margin:1px auto 0;background:repeating-linear-gradient(var(--coral) 0 6px,#f7b8b8 6px 12px);border-radius:6px;}
+  .candle .candle-charm{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:20px;height:20px;object-fit:contain;z-index:2;}
   .candle .glow{position:absolute;top:-6px;left:50%;width:30px;height:30px;transform:translateX(-50%);background:radial-gradient(circle,rgba(247,206,70,.55),transparent 70%);border-radius:50%;z-index:-1;}
   .candle-toast{
     margin-top:18px;background:var(--yellow-bright);border-radius:var(--r-md);
     box-shadow:var(--soft-yellow);padding:18px 22px;display:none;animation:pop .4s ease;
   }
+  .candle-step-label{font-family:'Baloo 2';font-weight:700;font-size:.92rem;color:var(--ink-deep);margin:22px 0 12px;}
+  .icon-picker{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .icon-opt{width:72px;height:72px;border-radius:50%;border:3px solid var(--pink-soft);background:var(--white);cursor:pointer;padding:6px;transition:.2s;}
+  .icon-opt img{width:100%;height:100%;object-fit:contain;}
+  .icon-opt:hover{transform:translateY(-4px);border-color:var(--coral);}
+  .icon-opt.selected{border-color:var(--coral);background:var(--yellow-cream);box-shadow:var(--soft-sm);transform:translateY(-4px) scale(1.05);}
+  .step-hint{font-weight:500;font-size:.78rem;color:var(--ink);opacity:.75;}
+  .pray-options{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:640px;margin:0 auto;}
+  .pray-opt{
+    flex:1 1 240px;max-width:300px;text-align:left;cursor:pointer;
+    background:var(--white);border:2px solid var(--pink-soft);border-radius:var(--r-md);
+    padding:14px 16px;transition:.2s;display:flex;flex-direction:column;gap:3px;position:relative;
+  }
+  .pray-opt:hover{transform:translateY(-3px);border-color:var(--coral);box-shadow:var(--soft-sm);}
+  .pray-opt.selected{border-color:var(--coral);background:var(--yellow-cream);box-shadow:var(--soft-sm);}
+  .pray-opt.selected::after{content:"✓";position:absolute;top:10px;right:14px;color:var(--coral);font-weight:800;font-size:1.1rem;}
+  .pray-opt .po-title{font-family:'Baloo 2';font-weight:700;font-size:.95rem;color:var(--ink-deep);}
+  .pray-opt .po-sub{font-size:.8rem;color:var(--ink);}
+  @media(max-width:640px){.icon-opt{width:58px;height:58px;}}
   .candle-toast.show{display:block;}
   .candle-toast .t1{font-family:'Baloo 2';font-weight:800;font-size:1.15rem;color:var(--ink-deep);}
   .candle-toast .t2{font-size:.92rem;color:var(--ink-deep);margin-top:4px;}
@@ -337,7 +331,7 @@
 
 <nav>
   <div class="wrap">
-    <div class="logo">🐰 DURO 🐴</div>
+    <div class="logo">🐰 DURO</div>
     <div class="navlinks">
       <a href="#hero">Home</a>
       <a href="#about">Profile</a>
@@ -359,8 +353,9 @@
     </div>
     <div class="hero-text">
       <div class="badge">★ 4TH ANNIVERSARY · PRO DEBUT ★</div>
-      <h1 class="bigname">DURO <span class="kr-name">주민규</span></h1>
-      <div class="heart-row">🐰 ♡ 🐴</div>
+      <h1 class="bigname">DURO</h1>
+      <span class="kr-name">주민규</span>
+      <div class="heart-row">🐰 ♡ 🐰</div>
       <p class="sub">Joo Min-kyu · Gen.G Support<br>4 Years on the Pro Stage</p>
     </div>
   </div>
@@ -369,7 +364,7 @@
 <div class="count-section">
   <div class="wrap">
     <p class="count-title">⏳ Countdown to the 4th Anniversary</p>
-    <p class="count-sub">Until June 13, 2026 (KST) — 4 years since debut 🐰🐴</p>
+    <p class="count-sub">Until June 13, 2026 (KST) — 4 years since debut 🐰</p>
     <div class="count-grid" id="countGrid">
       <div class="count-cell"><div class="num" id="cD">--</div><div class="lbl">Days</div></div>
       <div class="count-cell"><div class="num" id="cH">--</div><div class="lbl">Hours</div></div>
@@ -428,37 +423,56 @@
 
 <section id="gallery">
   <div class="wrap">
-    <div class="sec-head"><h2>Photo Gallery 📸</h2><p>Swipe through Duro's moments</p></div>
-    <div class="slideshow">
-      <div class="slide-frame" id="slideFrame">
-        <!-- Khi có link .jpg trực tiếp, thay <div class="slide placeholder"> bằng:
-             <div class="slide"><img src="LINK_JPG" alt="Duro"></div> -->
-        <div class="slide active"><img src="https://live.staticflickr.com/65535/55206976670_3bac67ae3e_b.jpg" alt="Duro" loading="lazy"></div>
-        <div class="slide"><img src="https://live.staticflickr.com/65535/55302697303_e03a28754e_b.jpg" alt="Duro" loading="lazy"></div>
-        <div class="slide"><img src="https://live.staticflickr.com/65535/55235970249_bbed43b92e_b.jpg" alt="Duro" loading="lazy"></div>
-        <div class="slide"><img src="https://live.staticflickr.com/65535/55235970114_92d442e19a_b.jpg" alt="Duro" loading="lazy"></div>
-        <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
-        <button class="slide-btn next" onclick="moveSlide(1)">›</button>
-      </div>
-      <div class="slide-dots" id="slideDots"></div>
+    <div class="sec-head"><h2>Photo Gallery 📸</h2><p>Duro's best moments</p></div>
+    <div class="gallery-grid">
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55206976670_3bac67ae3e_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55302697303_e03a28754e_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55235970249_bbed43b92e_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55235970114_92d442e19a_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto ph-wait"><div class="pe">📷</div><small>Photo 5</small></div>
+      <div class="gphoto ph-wait"><div class="pe">⭐</div><small>Photo 6</small></div>
     </div>
   </div>
 </section>
 
 <section id="candles">
   <div class="wrap candle-wrap">
-    <div class="sec-head"><h2>Light a Candle 🕯️</h2><p>Tap to light a candle and send your wish for victory</p></div>
+    <div class="sec-head"><h2>Light a Candle 🕯️</h2><p>Pick your lucky charm, choose a match, and pray for the win!</p></div>
     <div class="candle-board">
       <div class="candle-count" id="candleCount">0</div>
-      <div class="candle-count-lbl">Candles lit for Duro</div>
+      <div class="candle-count-lbl">Candles lit for GEN.G</div>
+
+      <!-- bước 1: chọn icon -->
+      <div class="candle-step-label">Pick your charm</div>
+      <div class="icon-picker" id="iconPicker">
+        <button class="icon-opt" data-icon="frog.png" onclick="pickIcon(this)"><img src="frog.png" alt="frog"></button>
+        <button class="icon-opt" data-icon="bear.png" onclick="pickIcon(this)"><img src="bear.png" alt="bear"></button>
+        <button class="icon-opt" data-icon="cat.png" onclick="pickIcon(this)"><img src="cat.png" alt="cat"></button>
+        <button class="icon-opt" data-icon="dog.png" onclick="pickIcon(this)"><img src="dog.png" alt="dog"></button>
+        <button class="icon-opt" data-icon="bunny.png" onclick="pickIcon(this)"><img src="bunny.png" alt="bunny"></button>
+      </div>
+
+      <!-- bước 2: chọn điều cầu nguyện (chọn cả 2, 1, hoặc không) -->
+      <div class="candle-step-label">Choose what to pray for <span class="step-hint">(pick any, both, or none)</span></div>
+      <div class="pray-options">
+        <button class="pray-opt" data-pray="Road to MSI 2026 · Round 4 · GEN vs R2 Winner · 13:00 Sat 13.06 (KST)" onclick="togglePray(this)">
+          <span class="po-title">🏆 Road to MSI · Round 4</span>
+          <span class="po-sub">GEN vs R2 Winner · 13:00 Sat 13.06 (KST)</span>
+        </button>
+        <button class="pray-opt" data-pray="All the best wishes" onclick="togglePray(this)">
+          <span class="po-title">💛 All the best wishes</span>
+          <span class="po-sub">For Gen.G's health & every game ahead</span>
+        </button>
+      </div>
+
       <div class="candle-field" id="candleField">
-        <span class="candle-empty" id="candleEmpty">No candles yet — light the first one! 🐰🐴</span>
+        <span class="candle-empty" id="candleEmpty">No candles yet — light the first one! 🐰</span>
       </div>
     </div>
     <button class="btn" onclick="lightCandle()">🕯️ Light 10 candles</button>
     <div class="candle-toast" id="candleToast">
       <div class="t1">🎉 You lit 10 candles — sent successfully!</div>
-      <div class="t2">Let's pray for victory in this match together 🐰🐴🕯️</div>
+      <div class="t2" id="candleToastSub">Let's pray for victory together 🐰🕯️</div>
     </div>
   </div>
 </section>
@@ -472,7 +486,7 @@
       <button class="btn" onclick="addMsg()">💌 Send message</button>
     </div>
     <div class="msg-grid" id="msgGrid"></div>
-    <p class="empty-note" id="emptyNote">No messages yet — be the first! 🐰🐴</p>
+    <p class="empty-note" id="emptyNote">No messages yet — be the first! 🐰</p>
   </div>
 </section>
 
@@ -492,7 +506,7 @@
 </div>
 
 <footer>
-  <div class="foot-heart">🐰 ♡ 🐴 ♡ 🐰</div>
+  <div class="foot-heart">🐰 ♡ 🐰 ♡ 🐰</div>
   <p><strong>Happy 4th Anniversary, DURO!</strong></p>
   <p class="small">Fan-made page · not officially affiliated with Gen.G or LCK</p>
 </footer>
@@ -516,7 +530,7 @@
       const t = document.querySelector('.count-title');
       const s = document.querySelector('.count-sub');
       if(t) t.textContent = '🎉 Happy 4th Anniversary, Duro!';
-      if(s) s.textContent = 'Four years on the pro stage today — thank you for everything 🐰🐴🎀';
+      if(s) s.textContent = 'Four years on the pro stage today — thank you for everything 🐰🎀';
       return;
     }
 
@@ -568,7 +582,7 @@
     const grid = document.getElementById('msgGrid');
     const note = document.getElementById('emptyNote');
     note.style.display = msgs.length ? 'none':'block';
-    const hearts = ['🐰','🐴','⭐','🎀','💛','🧸'];
+    const hearts = ['🐰','⭐','🎀','💛','🧸','🌸'];
     grid.innerHTML = msgs.map((m,i)=>`
       <div class="msg-card">
         <span class="hh">${hearts[i%hearts.length]}</span>
@@ -590,7 +604,7 @@
     const items = msgs.length ? msgs : fallback.map(w=>({name:w.n, message:w.t}));
     if(empty) empty.style.display = items.length ? 'none' : 'flex';
 
-    const hearts = ['🐰','🐴','⭐','🎀','💛','🧸','🌸','🍓'];
+    const hearts = ['🐰','⭐','🎀','💛','🧸','🌸','🍓'];
     const W = board.clientWidth, H = board.clientHeight;
     const noteW = W < 640 ? 120 : 150, noteH = 130;
 
@@ -637,11 +651,33 @@
   loadMsgs();
   setInterval(loadMsgs, 30000);
 
-  /* ====== CANDLES — light 10 per click (session only) ====== */
+  /* ====== CANDLES — pick charm + match, light 10, save to Sheet ====== */
+  // ⬇️ DÁN LINK APPS SCRIPT CỦA SHEET NẾN VÀO ĐÂY (xem hướng dẫn bên dưới)
+  const CANDLE_URL = 'https://script.google.com/macros/s/AKfycbx39QdmFxtVIY9OwewV19OCYlmeVVwz2I9hZQ2qfYmbISA1C_uRYIO9RcQruJUaR99k/exec';
+
   let candleTotal = 0;
   let lighting = false;
+  let selectedIcon = '';
+
+  function pickIcon(btn){
+    document.querySelectorAll('.icon-opt').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedIcon = btn.getAttribute('data-icon');
+  }
+
+  function togglePray(btn){
+    btn.classList.toggle('selected');   // bật/tắt — chọn cả 2, 1, hoặc không
+  }
+
   function lightCandle(){
-    if(lighting) return;          // chặn ấn chồng khi đang thắp
+    if(lighting) return;
+    if(!selectedIcon){ alert('Please pick your lucky charm first 🐸🐻🐱🐶🐰'); return; }
+
+    // gom các điều đã chọn (có thể rỗng)
+    const chosen = Array.from(document.querySelectorAll('.pray-opt.selected'))
+                        .map(b => b.getAttribute('data-pray'));
+    const prayText = chosen.length ? chosen.join(' + ') : 'For Duro 💛';
+
     lighting = true;
     const field = document.getElementById('candleField');
     const empty = document.getElementById('candleEmpty');
@@ -654,24 +690,42 @@
       candleTotal++; lit++;
       const c = document.createElement('div');
       c.className = 'candle';
-      c.innerHTML = '<div class="glow"></div><div class="flame"></div><div class="stick"></div>';
+      c.innerHTML = '<img src="'+selectedIcon+'" class="candle-charm" alt=""><div class="glow"></div><div class="flame"></div><div class="stick"></div>';
       field.appendChild(c);
       document.getElementById('candleCount').textContent = candleTotal;
       field.scrollTop = field.scrollHeight;
       if(lit >= 10){
         clearInterval(timer);
-        toast.classList.add('show');   // hiện thông báo gửi thành công
+        document.getElementById('candleToastSub').textContent = 'Praying for: ' + prayText + ' 🕯️';
+        toast.classList.add('show');
         lighting = false;
+        if(CANDLE_URL){
+          const u = CANDLE_URL + '?icon=' + encodeURIComponent(selectedIcon)
+                  + '&match=' + encodeURIComponent(prayText) + '&count=10';
+          fetch(u).catch(()=>{});
+        }
       }
     }, 120);
   }
+
+  // đọc tổng số nến đã lưu khi vào trang
+  function loadCandles(){
+    if(!CANDLE_URL) return;
+    fetch(CANDLE_URL).then(r=>r.json()).then(d=>{
+      if(d && typeof d.total === 'number'){
+        candleTotal = d.total;
+        document.getElementById('candleCount').textContent = candleTotal;
+      }
+    }).catch(()=>{});
+  }
+  loadCandles();
 
   /* ====== FLOATING WISH BUBBLES ======
      Lấy lời chúc mặc định + những tin fan gửi ở Fan Wall,
      thi thoảng hiện một bong bóng ở góc dưới rồi tự ẩn. */
   const defaultWishes = [
     {n:'Bunny Fan', t:'Fighting Duro! Wishing you a flawless game today 🐰'},
-    {n:'Horse Fan', t:'4 years already — so proud of you! 🐴💛'},
+    {n:'Bear Fan', t:'4 years already — so proud of you! 🐻💛'},
     {n:'GenG Lover', t:'Your shotcalling carries us. Praying for the win! 🕯️'},
     {n:'Lynnie', t:'Healthy and happy always, our little support ace 🎀'},
     {n:'Anonymous', t:'From rookie to champion — keep shining, Duro! ⭐'},
@@ -701,32 +755,6 @@
 
   // hiện lần đầu sau 4 giây, rồi cứ ~9 giây hiện một lần
   setTimeout(()=>{ showWish(); setInterval(showWish, 9000); }, 4000);
-
-  /* ====== GALLERY SLIDESHOW ====== */
-  let slideIdx = 0;
-  const slides = Array.from(document.querySelectorAll('#slideFrame .slide'));
-  const dotsBox = document.getElementById('slideDots');
-
-  // tạo chấm chỉ vị trí
-  slides.forEach((_, i) => {
-    const b = document.createElement('button');
-    if(i === 0) b.className = 'active';
-    b.onclick = () => goSlide(i);
-    dotsBox.appendChild(b);
-  });
-  const dots = Array.from(dotsBox.children);
-
-  function goSlide(i){
-    slides[slideIdx].classList.remove('active');
-    if(dots[slideIdx]) dots[slideIdx].classList.remove('active');
-    slideIdx = (i + slides.length) % slides.length;
-    slides[slideIdx].classList.add('active');
-    if(dots[slideIdx]) dots[slideIdx].classList.add('active');
-  }
-  function moveSlide(step){ goSlide(slideIdx + step); }
-
-  // tự chạy mỗi 5 giây
-  if(slides.length > 1){ setInterval(()=>moveSlide(1), 5000); }
 </script>
 </body>
 </html>
