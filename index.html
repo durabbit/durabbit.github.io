@@ -159,14 +159,22 @@
   .tl-card.geng .badge-geng{display:inline-block;background:var(--coral);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:.7rem;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:8px;}
 
   /* ===== GALLERY SLIDESHOW ===== */
-  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:720px;margin:0 auto;}
-  .gphoto{aspect-ratio:4/3;border-radius:var(--r-sm);overflow:hidden;box-shadow:var(--soft-sm);transition:transform .25s,box-shadow .25s;background:var(--pink-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-deep);text-align:center;}
+  .gallery-grid{
+    display:grid;grid-template-rows:repeat(2,1fr);grid-auto-flow:column;
+    grid-auto-columns:220px;gap:12px;max-width:720px;margin:0 auto;
+    overflow-x:auto;padding:6px 4px 14px;scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+  }
+  .gallery-grid::-webkit-scrollbar{height:8px;}
+  .gallery-grid::-webkit-scrollbar-track{background:var(--pink-soft);border-radius:8px;}
+  .gallery-grid::-webkit-scrollbar-thumb{background:var(--coral);border-radius:8px;}
+  .gphoto{aspect-ratio:4/3;border-radius:var(--r-sm);overflow:hidden;box-shadow:var(--soft-sm);transition:transform .25s,box-shadow .25s;background:var(--pink-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-deep);text-align:center;scroll-snap-align:start;}
   .gphoto img{width:100%;height:100%;object-fit:cover;display:block;}
   .gphoto:hover{transform:translateY(-4px) scale(1.02);box-shadow:var(--soft);}
   .gphoto.ph-wait:nth-child(odd){background:var(--yellow-cream);}
   .gphoto .pe{font-size:1.6rem;margin-bottom:4px;}
   .gphoto small{font-size:.7rem;font-weight:500;}
-  @media(max-width:640px){.gallery-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.gallery-grid{grid-auto-columns:160px;}}
 
   .fanwall{max-width:720px;margin:0 auto;}
   .fan-form{background:var(--white);padding:26px;border-radius:var(--r-lg);box-shadow:var(--soft);margin-bottom:30px;}
@@ -187,6 +195,7 @@
   .msg-card .txt{font-size:.9rem;color:var(--ink-deep);word-break:break-word;}
   .msg-card .hh{position:absolute;top:10px;right:14px;font-size:1rem;}
   .empty-note{text-align:center;color:var(--ink);font-style:italic;opacity:.8;padding:20px;}
+  .fanwall-hint{text-align:center;color:var(--ink);font-size:.86rem;opacity:.8;margin-top:4px;}
 
   /* ===== CANDLE / PRAYER ===== */
   .candle-wrap{max-width:860px;margin:0 auto;text-align:center;}
@@ -350,7 +359,7 @@
   <div class="hero-grid">
     <div class="hero-photo">
       <img src="deco4.png" alt="" class="ph-star">
-      <img src="durohero.jpg" alt="Duro lifting the LCK trophy">
+      <img src="durohero.png" alt="Duro lifting the LCK trophy">
       <img src="deco1.png" alt="" class="ph-bunny">
     </div>
     <div class="hero-text">
@@ -425,14 +434,16 @@
 
 <section id="gallery">
   <div class="wrap">
-    <div class="sec-head"><h2>Photo Gallery 📸</h2><p>Duro's best moments</p></div>
+    <div class="sec-head"><h2>Photo Gallery 📸</h2><p>Duro's best moments — swipe sideways for more →</p></div>
     <div class="gallery-grid">
       <div class="gphoto"><img src="https://live.staticflickr.com/65535/55206976670_3bac67ae3e_b.jpg" alt="Duro" loading="lazy"></div>
       <div class="gphoto"><img src="https://live.staticflickr.com/65535/55302697303_e03a28754e_b.jpg" alt="Duro" loading="lazy"></div>
       <div class="gphoto"><img src="https://live.staticflickr.com/65535/55235970249_bbed43b92e_b.jpg" alt="Duro" loading="lazy"></div>
       <div class="gphoto"><img src="https://live.staticflickr.com/65535/55235970114_92d442e19a_b.jpg" alt="Duro" loading="lazy"></div>
-      <div class="gphoto ph-wait"><div class="pe">📷</div><small>Photo 5</small></div>
-      <div class="gphoto ph-wait"><div class="pe">⭐</div><small>Photo 6</small></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55012384697_bddc144d28_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55013273571_3c5e2e893a_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55130100683_4a0e1f3ab7_b.jpg" alt="Duro" loading="lazy"></div>
+      <div class="gphoto"><img src="https://live.staticflickr.com/65535/55129023882_d8d17bb377_b.jpg" alt="Duro" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -487,8 +498,9 @@
       <div class="row"><label>Your message</label><textarea id="fanMsg" rows="3" maxlength="200" placeholder="Wishing Duro health and great games ahead..."></textarea></div>
       <button class="btn" onclick="addMsg()">💌 Send message</button>
     </div>
-    <div class="msg-grid" id="msgGrid"></div>
-    <p class="empty-note" id="emptyNote">No messages yet — be the first! 🐰</p>
+    <p class="fanwall-hint">Your message will float onto the Wish Board below 🗒️✨</p>
+    <div class="msg-grid" id="msgGrid" style="display:none"></div>
+    <p class="empty-note" id="emptyNote" style="display:none"></p>
   </div>
 </section>
 
@@ -581,16 +593,7 @@
   }
 
   function render(){
-    const grid = document.getElementById('msgGrid');
-    const note = document.getElementById('emptyNote');
-    note.style.display = msgs.length ? 'none':'block';
-    const hearts = ['🐰','⭐','🎀','💛','🧸','🌸'];
-    grid.innerHTML = msgs.map((m,i)=>`
-      <div class="msg-card">
-        <span class="hh">${hearts[i%hearts.length]}</span>
-        <div class="who">${esc(m.name)}</div>
-        <div class="txt">${esc(m.message)}</div>
-      </div>`).join('');
+    // Lưới lời chúc dưới form đã được ẩn — lời chúc hiển thị ở Wish Board.
     renderBoard();
   }
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
