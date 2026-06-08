@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cầu nguyện cho GEN.G 🕯️</title>
+<meta property="og:title" content="GEN.G nhất định chiến thắng 🕯️">
+<meta property="og:description" content="Cùng thắp nến và gửi lời chúc chiến thắng cho Duro và Gen.G!">
+<meta property="og:image" content="https://durabbit.github.io/gengwin.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#E8B93A;        /* vàng đậm điểm nhấn */
+    --gold-light:#F5D871;
+    --gold-soft:#FCE9A8;
+    --black:#2B2620;       /* nâu-đen cho chữ/viền */
+    --black-soft:#fffdf5;  /* nền sáng (đổi tên giữ nguyên dùng) */
+    --black-card:#FFFFFF;  /* thẻ trắng */
+    --cream:#3a3320;       /* chữ tối trên nền sáng */
+    --ink:#9a8856;
+    --white:#fffdf8;
+    --bg:#FCE9A8;          /* nền trang: vàng kem */
+    --soft:0 10px 28px rgba(160,130,40,.22);
+    --soft-sm:0 6px 16px rgba(160,130,40,.18);
+    --glow-gold:0 8px 22px rgba(232,185,58,.4);
+    --r-lg:28px;--r-md:22px;--r-sm:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Fredoka',sans-serif;color:var(--cream);background:
+    radial-gradient(circle at 15% 15%, #fff6d8, transparent 45%),
+    radial-gradient(circle at 85% 10%, #FCE9A8, transparent 40%),
+    linear-gradient(160deg,#FDF3CE,#FCE19A);
+    background-attachment:fixed;overflow-x:hidden;line-height:1.6;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px;position:relative;z-index:2;}
+
+  /* deco */
+  .deco{position:fixed;pointer-events:none;z-index:1;opacity:.85;}
+  .deco img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.5));}
+  .deco.d1{width:130px;height:130px;top:10%;left:3%;animation:float 7s ease-in-out infinite;}
+  .deco.d2{width:120px;height:120px;top:55%;right:3%;animation:float 9s ease-in-out infinite reverse;}
+  .deco.d3{width:110px;height:110px;bottom:6%;left:5%;animation:float 8s ease-in-out infinite;}
+  .deco.d4{width:115px;height:115px;top:30%;right:5%;animation:float 7.5s ease-in-out infinite;}
+  .deco.d5{width:100px;height:100px;top:78%;left:7%;animation:float 8.5s ease-in-out infinite reverse;}
+  .deco.d6{width:95px;height:95px;top:40%;left:2%;animation:float 6.5s ease-in-out infinite;}
+  .deco.d7{width:105px;height:105px;bottom:30%;right:6%;animation:float 9.5s ease-in-out infinite reverse;}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-16px) rotate(5deg)}}
+  @media(max-width:640px){
+    .deco.d2,.deco.d4,.deco.d6,.deco.d7{display:none;}
+    .deco.d1,.deco.d3,.deco.d5{width:70px;height:70px;opacity:.7;}
+  }
+
+  header{text-align:center;padding:36px 0 20px;}
+  .hero-banner{width:100%;max-width:560px;border-radius:var(--r-lg);box-shadow:var(--soft);margin-bottom:22px;border:3px solid var(--white);}
+  .badge{display:inline-block;background:var(--black);color:var(--gold-light);font-family:'Baloo 2';font-weight:700;font-size:.85rem;letter-spacing:1px;padding:9px 22px;border-radius:999px;box-shadow:var(--soft);margin-bottom:18px;}
+  h1{font-family:'Baloo 2';font-weight:800;font-size:clamp(2.2rem,7vw,3.6rem);color:var(--black);text-shadow:0 3px 0 var(--gold),0 8px 16px rgba(160,130,40,.3);}
+  header p{color:var(--cream);font-family:'Baloo 2';font-weight:600;font-size:1.05rem;margin-top:8px;}
+
+  section{padding:30px 0;}
+  .sec-head{text-align:center;margin-bottom:26px;}
+  .sec-head h2{font-family:'Baloo 2';font-weight:800;font-size:clamp(1.6rem,5vw,2.3rem);color:var(--gold-light);background:var(--black);display:inline-block;padding:9px 28px;border-radius:999px;box-shadow:var(--soft);}
+  .sec-head p{color:var(--ink);margin-top:12px;font-size:.95rem;}
+
+  /* ===== NAME BOX (chung) ===== */
+  .name-box{max-width:520px;margin:0 auto 6px;background:var(--black-card);border:2px solid var(--gold);border-radius:var(--r-lg);padding:22px 24px;box-shadow:var(--soft);text-align:center;}
+  .name-box label{display:block;font-family:'Baloo 2';font-weight:700;color:var(--gold);font-size:1rem;margin-bottom:10px;}
+  .name-box input{width:100%;border:2px solid #e8d9a8;border-radius:999px;padding:12px 18px;font-family:'Fredoka';font-size:1rem;color:#2B2620;background:#fff;outline:none;text-align:center;transition:.2s;}
+  .name-box input::placeholder,.flag-form textarea::placeholder{color:#b3a275;}
+  .name-box input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,168,92,.2);}
+  .name-box .hint{font-size:.8rem;color:var(--ink);margin-top:8px;}
+
+  /* ===== CANDLES ===== */
+  .candle-wrap{max-width:860px;margin:0 auto;text-align:center;}
+  .candle-board{background:var(--black-card);border-radius:var(--r-lg);box-shadow:var(--soft);padding:32px 24px 28px;margin-bottom:24px;border:1px solid #efe3bc;}
+  .candle-count{font-family:'Baloo 2';font-weight:800;font-size:2.8rem;color:var(--gold);line-height:1;}
+  .candle-count-lbl{font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);font-weight:600;margin-top:4px;}
+  .step-label{font-family:'Baloo 2';font-weight:700;font-size:.95rem;color:var(--cream);margin:22px 0 12px;}
+  .step-hint{font-weight:500;font-size:.78rem;color:var(--ink);opacity:.85;}
+  .icon-picker{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .icon-opt{width:72px;height:72px;border-radius:50%;border:3px solid #e8d9a8;background:var(--black-soft);cursor:pointer;padding:6px;transition:.2s;}
+  .icon-opt img{width:100%;height:100%;object-fit:contain;}
+  .icon-opt:hover{transform:translateY(-4px);border-color:var(--gold);}
+  .icon-opt.selected{border-color:var(--gold);background:#fbeec0;box-shadow:var(--glow-gold);transform:translateY(-4px) scale(1.05);}
+  .pray-options{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:640px;margin:0 auto;}
+  .pray-opt{flex:1 1 240px;max-width:300px;text-align:left;cursor:pointer;background:var(--black-soft);border:2px solid #e8d9a8;border-radius:var(--r-md);padding:14px 16px;transition:.2s;display:flex;flex-direction:column;gap:3px;position:relative;}
+  .pray-opt:hover{transform:translateY(-3px);border-color:var(--gold);}
+  .pray-opt.selected{border-color:var(--gold);background:#fbeec0;}
+  .pray-opt.selected::after{content:"✓";position:absolute;top:10px;right:14px;color:var(--gold);font-weight:800;font-size:1.1rem;}
+  .pray-opt .po-title{font-family:'Baloo 2';font-weight:700;font-size:.95rem;color:var(--cream);}
+  .pray-opt .po-sub{font-size:.8rem;color:var(--ink);}
+  .candle-field{margin-top:24px;min-height:120px;display:flex;flex-wrap:wrap;gap:10px 8px;align-items:flex-end;justify-content:center;padding:18px 10px 8px;background:var(--black-soft);border-radius:var(--r-md);border:3px dashed var(--gold);}
+  .candle-empty{color:var(--ink);font-style:italic;opacity:.8;font-size:.9rem;align-self:center;}
+  .candle{position:relative;width:26px;animation:pop .4s ease;}
+  .candle .candle-charm{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:20px;height:20px;object-fit:contain;z-index:2;}
+  .candle .flame{width:12px;height:18px;margin:0 auto;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff3b0 0%,var(--gold-light) 45%,var(--gold) 100%);box-shadow:0 0 10px 3px rgba(228,205,138,.8),0 0 18px 6px rgba(201,168,92,.6);transform-origin:50% 100%;animation:flicker 1.1s ease-in-out infinite alternate;}
+  @keyframes flicker{0%{transform:scale(1) rotate(-3deg);opacity:.92;}50%{transform:scale(1.08,.96) rotate(2deg);opacity:1;}100%{transform:scale(.96,1.05) rotate(-2deg);opacity:.95;}}
+  .candle .stick{width:11px;height:30px;margin:1px auto 0;background:repeating-linear-gradient(var(--gold) 0 6px,#a8884a 6px 12px);border-radius:6px;}
+  .candle .glow{position:absolute;top:-6px;left:50%;width:30px;height:30px;transform:translateX(-50%);background:radial-gradient(circle,rgba(228,205,138,.6),transparent 70%);border-radius:50%;z-index:-1;}
+  @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+
+  .btn{background:var(--gold);color:var(--black);font-family:'Baloo 2';font-weight:700;font-size:1rem;border:none;border-radius:999px;padding:13px 34px;cursor:pointer;box-shadow:var(--glow-gold);transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(201,168,92,.6);}
+  .btn:active{transform:translateY(0);}
+  .btn-share{background:var(--white);color:var(--black);border:2px solid var(--gold);margin-left:10px;box-shadow:var(--soft-sm);}
+  @media(max-width:560px){.btn-share{margin-left:0;margin-top:12px;}}
+  .toast{margin-top:18px;background:var(--gold);border-radius:var(--r-md);box-shadow:var(--glow-gold);padding:18px 22px;display:none;animation:pop .4s ease;}
+  .toast.show{display:block;}
+  .toast .t1{font-family:'Baloo 2';font-weight:800;font-size:1.1rem;color:var(--black);}
+  .toast .t2{font-size:.92rem;color:#fbeec0;margin-top:4px;}
+
+  /* ===== VẨY LÁ BƯỞI ===== */
+  .leaf-wrap{max-width:760px;margin:0 auto;text-align:center;}
+  .leaf-stage{position:relative;width:100%;height:420px;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(160deg,#fffbed,var(--gold-soft));box-shadow:var(--soft);border:2px solid var(--gold);margin-bottom:22px;display:flex;align-items:center;justify-content:center;}
+  .leaf-stage .stage-img{max-width:78%;max-height:88%;border-radius:var(--r-md);box-shadow:0 8px 22px rgba(120,80,30,.25);border:3px solid var(--white);}
+  .flying-leaf{position:absolute;width:120px;height:120px;left:-140px;top:50%;pointer-events:none;z-index:5;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));}
+  @media(max-width:640px){.leaf-stage{height:300px;}.flying-leaf{width:80px;height:80px;}}
+  .flag-wrap{max-width:720px;margin:0 auto;}
+  .flag-form{background:var(--black-card);padding:26px;border-radius:var(--r-lg);box-shadow:var(--soft);margin-bottom:26px;border:1px solid #efe3bc;}
+  .flag-form label{display:block;font-weight:600;font-size:.88rem;color:var(--cream);margin:4px 0 6px;}
+  .flag-form textarea{width:100%;border:2px solid #e8d9a8;border-radius:var(--r-sm);padding:12px 16px;font-family:'Fredoka';font-size:.95rem;color:#2B2620;background:#fff;outline:none;resize:vertical;transition:.2s;}
+  .flag-form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,168,92,.2);}
+
+  /* ===== WISH BOARD ===== */
+  .board{position:relative;width:100%;height:600px;border-radius:var(--r-lg);overflow:hidden;background:radial-gradient(circle at 20% 25%, #fff8de, transparent 50%),radial-gradient(circle at 80% 20%, var(--gold-soft), transparent 50%),linear-gradient(160deg,#fffbed,#FCE9A8);box-shadow:var(--soft);border:2px solid var(--gold);}
+  .board-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink);font-style:italic;opacity:.7;font-size:.95rem;text-align:center;padding:20px;}
+  .note{position:absolute;width:160px;padding:14px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.5);font-size:.82rem;color:var(--black);transition:transform .3s ease,box-shadow .3s ease;animation:noteFloat var(--dur,7s) ease-in-out infinite;}
+  .note:hover{transform:scale(1.08) rotate(0deg)!important;box-shadow:0 14px 30px rgba(201,168,92,.5);z-index:20;}
+  .note .n-who{font-family:'Baloo 2';font-weight:700;font-size:.86rem;margin-bottom:4px;}
+  .note .n-txt{line-height:1.4;word-break:break-word;max-height:90px;overflow:hidden;}
+  .note.c0{background:linear-gradient(150deg,var(--gold-light),var(--gold));}
+  .note.c1{background:linear-gradient(150deg,var(--gold-soft),var(--gold-light));}
+  .note.c2{background:linear-gradient(150deg,var(--gold),#b8924a);}
+  .note.c3{background:linear-gradient(150deg,#fff,var(--gold-soft));}
+  .note.c4{background:linear-gradient(150deg,var(--gold-light),#fff6dd);}
+  .note.c5{background:linear-gradient(150deg,var(--gold-soft),var(--gold));}
+  .note.note-candle{background:linear-gradient(150deg,#fff6dd,var(--gold-light));box-shadow:0 8px 22px rgba(228,205,138,.55);}
+  .note.note-candle .n-who{color:#7a5e1e;}
+  @keyframes noteFloat{0%,100%{transform:translateY(0) rotate(var(--rot,0deg));}50%{transform:translateY(-12px) rotate(calc(var(--rot,0deg) + 1.5deg));}}
+  .board-hint{text-align:center;color:var(--ink);font-size:.85rem;margin-top:14px;opacity:.85;}
+
+  .nav-link{display:block;text-align:center;margin:10px 0 0;}
+  .nav-link a{color:var(--gold);font-weight:600;text-decoration:none;font-size:.9rem;}
+  .nav-link a:hover{text-decoration:underline;}
+
+  footer{text-align:center;padding:44px 20px;background:var(--gold);border-radius:var(--r-lg) var(--r-lg) 0 0;margin-top:30px;}
+
+  /* ===== SHARE MODAL ===== */
+  .share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+  .share-overlay.show{display:flex;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .share-modal{background:var(--black-card);border:2px solid var(--gold);border-radius:var(--r-lg);padding:22px;max-width:420px;width:100%;text-align:center;box-shadow:var(--soft);animation:pop .35s ease;max-height:92vh;overflow-y:auto;}
+  .share-modal h3{font-family:'Baloo 2';font-weight:800;color:var(--gold);font-size:1.2rem;margin-bottom:14px;}
+  .share-card-preview{width:100%;border-radius:var(--r-md);box-shadow:var(--soft-sm);display:block;margin-bottom:16px;}
+  .share-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .share-btn{flex:1 1 130px;border:none;border-radius:999px;padding:12px 16px;font-family:'Baloo 2';font-weight:700;font-size:.92rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+  .share-btn.primary{background:var(--gold);color:var(--black);box-shadow:var(--glow-gold);}
+  .share-btn.secondary{background:var(--black-soft);color:var(--cream);border:2px solid #e8d9a8;}
+  .share-btn:hover{transform:translateY(-2px);}
+  .share-close{margin-top:14px;background:none;border:none;color:var(--ink);font-size:.85rem;cursor:pointer;text-decoration:underline;}
+  .share-tip{font-size:.78rem;color:var(--ink);margin-top:12px;line-height:1.5;}
+  .share-divider{display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:var(--ink);font-size:.8rem;}
+  .share-divider::before,.share-divider::after{content:"";flex:1;height:1px;background:#e8d9a8;}
+  .social-row{display:flex;gap:12px;justify-content:center;}
+  .social-btn{width:50px;height:50px;border-radius:50%;border:2px solid #e8d9a8;background:var(--black-soft);color:var(--cream);font-size:1.2rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;}
+  .social-btn:hover{transform:translateY(-3px);border-color:var(--gold);color:var(--gold);}
+  .social-btn svg{width:22px;height:22px;fill:currentColor;}
+  .copy-ok{font-size:.78rem;color:var(--gold);margin-top:8px;height:16px;}
+  footer p{color:var(--black);font-weight:600;font-size:.9rem;}
+  footer .small{font-size:.76rem;opacity:.75;margin-top:8px;}
+
+  @media(max-width:640px){
+    .board{height:460px;}
+    .note{width:130px;font-size:.76rem;}
+    .icon-opt{width:58px;height:58px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="deco d1"><img src="bunny.png" alt=""></div>
+<div class="deco d2"><img src="frog.png" alt=""></div>
+<div class="deco d3"><img src="cat.png" alt=""></div>
+<div class="deco d4"><img src="dog.png" alt=""></div>
+<div class="deco d5"><img src="bear.png" alt=""></div>
+<div class="deco d6"><img src="frog.png" alt=""></div>
+<div class="deco d7"><img src="bunny.png" alt=""></div>
+
+<header>
+  <div class="wrap">
+    <img src="gengwin.jpg" alt="GEN.G" class="hero-banner">
+    <div class="badge">🕯️ CẦU NGUYỆN CHO GEN.G</div>
+    <h1>GEN.G nhất định chiến thắng</h1>
+    <p>Cùng nhau cầu chiến thắng cho Duro và Gen.G 🐰💛</p>
+  </div>
+</header>
+
+<!-- ===== NHẬP TÊN (DÙNG CHUNG) ===== -->
+<section id="name">
+  <div class="wrap">
+    <div class="name-box">
+      <label>✍️ Tên của bạn</label>
+      <input type="text" id="fanName" maxlength="24" placeholder="Vd: Lynnie">
+      <div class="hint">Tên này dùng cho cả phần thắp nến và lời chúc bên dưới</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THẮP NẾN ===== -->
+<section id="candles">
+  <div class="wrap candle-wrap">
+    <div class="sec-head"><h2>Thắp nến cầu nguyện 🕯️</h2><p>Chọn linh vật may mắn, chọn điều cầu nguyện, rồi thắp nến nhé!</p></div>
+    <div class="candle-board">
+      <div class="candle-count" id="candleCount">0</div>
+      <div class="candle-count-lbl">Ngọn nến đã thắp cho GEN.G</div>
+
+      <div class="step-label">Chọn linh vật may mắn</div>
+      <div class="icon-picker">
+        <button class="icon-opt" data-icon="frog.png" onclick="pickIcon(this)"><img src="frog.png" alt="frog"></button>
+        <button class="icon-opt" data-icon="bear.png" onclick="pickIcon(this)"><img src="bear.png" alt="bear"></button>
+        <button class="icon-opt" data-icon="cat.png" onclick="pickIcon(this)"><img src="cat.png" alt="cat"></button>
+        <button class="icon-opt" data-icon="dog.png" onclick="pickIcon(this)"><img src="dog.png" alt="dog"></button>
+        <button class="icon-opt" data-icon="bunny.png" onclick="pickIcon(this)"><img src="bunny.png" alt="bunny"></button>
+      </div>
+
+      <div class="step-label">Cầu nguyện cho điều gì? <span class="step-hint">(chọn cả 2, 1, hoặc không)</span></div>
+      <div class="pray-options">
+        <button class="pray-opt" data-pray="Road to MSI 2026 · Vòng 4 · GEN vs KT · 13:00 Thứ 7 13.06 (giờ VN)" onclick="togglePray(this)">
+          <span class="po-title">🏆 Road to MSI · Vòng 4</span>
+          <span class="po-sub">GEN vs KT · 13:00 T7 13.06 (giờ VN)</span>
+        </button>
+        <button class="pray-opt" data-pray="Mọi điều tốt đẹp nhất" onclick="togglePray(this)">
+          <span class="po-title">💛 Mọi điều tốt đẹp nhất</span>
+          <span class="po-sub">Cho sức khỏe của Gen.G & mọi trận sắp tới</span>
+        </button>
+      </div>
+
+      <div class="candle-field" id="candleField">
+        <span class="candle-empty" id="candleEmpty">Chưa có nến nào — hãy thắp ngọn đầu tiên! 🐰</span>
+      </div>
+    </div>
+    <button class="btn" onclick="lightCandle()">🕯️ Thắp 10 ngọn nến</button>
+    <button class="btn btn-share" onclick="shareCandles()">📸 Tạo ảnh chia sẻ số nến của tôi</button>
+    <div class="toast" id="candleToast">
+      <div class="t1">🎉 Bạn đã thắp 10 ngọn nến — gửi thành công!</div>
+      <div class="t2" id="candleToastSub">Cùng cầu chiến thắng nhé 🐰🕯️</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VẨY LÁ BƯỞI ===== -->
+<section id="leaf">
+  <div class="wrap leaf-wrap">
+    <div class="sec-head"><h2>Vẩy lá bưởi xua vận xui 🌿</h2><p>Mỗi lần vẩy là một lần xua đi điều xui xẻo cho Gen.G!</p></div>
+    <div class="leaf-stage" id="leafStage">
+      <img src="gengwin.jpg" alt="GEN.G" class="stage-img">
+    </div>
+    <button class="btn" onclick="waveLeaf()">🌿 Vẩy lá bưởi</button>
+  </div>
+</section>
+
+<!-- ===== LẬP KÈO (FLAG) ===== -->
+<section id="flag">
+  <div class="wrap flag-wrap">
+    <div class="sec-head"><h2>Lời chúc chiến thắng 🎉</h2><p>Gửi lời chúc của bạn đến đội tuyển nhé!</p></div>
+    <div class="flag-form">
+      <div class="row"><label>Gửi lời chúc đến đội tuyển tôi yêu bạn nhé...</label><textarea id="flagText" rows="3" maxlength="200" placeholder="Vd: Cố lên GenG, nhất định vô địch nhé!"></textarea></div>
+      <button class="btn" onclick="addFlag()">💌 Gửi lời chúc</button>
+    </div>
+    <div class="board" id="flagBoard">
+      <div class="board-empty" id="flagEmpty">Chưa có lời chúc nào — hãy là người đầu tiên! 💌</div>
+    </div>
+    <p class="board-hint">Mỗi lời chúc & lượt thắp nến là một tờ giấy bay lơ lửng · rê chuột để đọc ✨</p>
+  </div>
+</section>
+
+<!-- ===== SHARE MODAL ===== -->
+<div class="share-overlay" id="shareOverlay">
+  <div class="share-modal">
+    <h3 id="shareTitle">🎉 Chia sẻ khoảnh khắc của bạn!</h3>
+    <img class="share-card-preview" id="sharePreview" alt="Share card">
+    <div class="share-actions">
+      <button class="share-btn primary" onclick="downloadCard()">⬇️ Tải ảnh</button>
+      <button class="share-btn secondary" onclick="systemShare()">📲 Chia sẻ</button>
+    </div>
+    <p class="share-tip">📸 <b>Để đăng kèm ảnh này:</b> trên điện thoại bấm "Chia sẻ" để gửi thẳng ảnh tới Facebook / Instagram / Threads. Trên máy tính, bấm "Tải ảnh" rồi đăng ảnh đó lên nhé 🐰</p>
+
+    <div class="share-divider">hoặc chia sẻ link trang</div>
+    <div class="social-row">
+      <button class="social-btn" title="Facebook" onclick="shareTo('facebook')">
+        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
+      </button>
+      <button class="social-btn" title="Threads" onclick="shareTo('threads')">
+        <svg viewBox="0 0 24 24"><path d="M12.2 21.5c-3 0-5.3-1-6.8-2.9C4 16.9 3.3 14.6 3.2 12v-.1c.1-2.6.8-4.9 2.2-6.6C6.9 3.4 9.2 2.4 12.2 2.4c3 0 5.3 1 6.8 2.9.9 1.1 1.5 2.4 1.8 3.9l-1.9.5c-.5-2.4-2-4.4-4.7-4.4-2.4 0-4 .9-5 2.7-.8 1.4-1 3-1 4.5s.2 3.1 1 4.5c1 1.8 2.6 2.7 5 2.7 2.2 0 3.4-.6 4.3-1.6.6-.7.9-1.6.9-2.4 0-1-.4-1.8-1.1-2.4.3-1.8-.4-3.4-2.6-3.4-1.5 0-2.7.9-2.7 2.3 0 1.3 1 2 2.2 2 .5 0 .9-.1 1.2-.3.2 1-.4 1.6-1.6 1.6-1.8 0-2.7-1.4-2.7-3.2 0-2.3 1.7-3.9 4.3-3.9 3 0 4.6 2 4.5 4.7 0 .2 0 .4-.1.7.7.7 1.1 1.7 1.1 2.9 0 1.4-.5 2.7-1.5 3.7-1.2 1.3-3 2-5.5 2z"/></svg>
+      </button>
+      <button class="social-btn" title="X (Twitter)" onclick="shareTo('x')">
+        <svg viewBox="0 0 24 24"><path d="M18.2 2.3h3.3l-7.2 8.3 8.5 11.1h-6.6l-5.2-6.8-6 6.8H1.7l7.7-8.8L1.3 2.3H8l4.7 6.2 5.5-6.2zm-1.2 17.5h1.8L7.1 4.1H5.2l11.8 15.7z"/></svg>
+      </button>
+      <button class="social-btn" title="Sao chép link" onclick="copyLink()">
+        <svg viewBox="0 0 24 24"><path d="M3.9 12a3.1 3.1 0 013.1-3.1h4V7H7a5 5 0 100 10h4v-1.9H7A3.1 3.1 0 013.9 12zM8 13h8v-2H8v2zm9-6h-4v1.9h4a3.1 3.1 0 010 6.2h-4V17h4a5 5 0 000-10z"/></svg>
+      </button>
+    </div>
+    <p class="copy-ok" id="copyOk"></p>
+    <button class="share-close" onclick="closeShare()">Đóng</button>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Cùng cầu chiến thắng cho GEN.G! 🐰💛</strong></p>
+  <p class="small">Trang fan tự làm · không liên kết chính thức với Gen.G hay LCK</p>
+</footer>
+
+<script>
+  /* ====== LINK GOOGLE SHEET — DÁN VÀO ĐÂY ====== */
+  const CANDLE_URL = 'https://script.google.com/macros/s/AKfycbwQlpCjpeRxdaT_Rpbkfd-gZxq02WSRnPcnX6JgV6_wWPE0XceBaavBE4bReLcysE4m/exec';   // Sheet nến (Sheet 1)
+  const FLAG_URL   = 'https://script.google.com/macros/s/AKfycbzxmT-gdviPwN4s9fVZhEY06q-sm5MyavxigAYNHJMlF5_ZiWjXnlYbmq4BujOmAvqA/exec';   // Sheet lập kèo (Sheet 2)
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+  function getName(){ return document.getElementById('fanName').value.trim() || 'Ẩn danh'; }
+
+  /* ====== NẾN ====== */
+  let candleTotal = 0, lighting = false, selectedIcon = '', myCandles = 0;
+  function pickIcon(btn){
+    document.querySelectorAll('.icon-opt').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected'); selectedIcon = btn.getAttribute('data-icon');
+  }
+  function togglePray(btn){ btn.classList.toggle('selected'); }
+
+  function lightCandle(){
+    if(lighting) return;
+    if(!selectedIcon){ alert('Hãy chọn linh vật may mắn trước nhé 🐸🐻🐱🐶🐰'); return; }
+    const chosen = Array.from(document.querySelectorAll('.pray-opt.selected')).map(b=>b.getAttribute('data-pray'));
+    const prayText = chosen.length ? chosen.join(' + ') : 'Cho Gen.G 💛';
+    const name = getName();
+    lighting = true;
+    const field=document.getElementById('candleField'), empty=document.getElementById('candleEmpty'), toast=document.getElementById('candleToast');
+    if(empty) empty.style.display='none'; toast.classList.remove('show');
+    let lit=0;
+    const timer=setInterval(()=>{
+      candleTotal++; lit++;
+      const c=document.createElement('div'); c.className='candle';
+      c.innerHTML='<img src="'+selectedIcon+'" class="candle-charm" alt=""><div class="glow"></div><div class="flame"></div><div class="stick"></div>';
+      field.appendChild(c);
+      document.getElementById('candleCount').textContent=candleTotal;
+      field.scrollTop=field.scrollHeight;
+      if(lit>=10){
+        clearInterval(timer);
+        myCandles += 10;
+        document.getElementById('candleToastSub').textContent=name+' đang cầu nguyện cho: '+prayText+' 🕯️';
+        toast.classList.add('show'); lighting=false;
+        if(CANDLE_URL){
+          fetch(CANDLE_URL+'?icon='+encodeURIComponent(selectedIcon)+'&match='+encodeURIComponent(name+' · '+prayText)+'&count=10').catch(()=>{});
+        }
+        // hiện lên Wish Board + lưu vào Sheet lời chúc để mọi người cùng thấy
+        const candleMsg = 'vừa thắp 10 ngọn nến 🕯️ · '+prayText;
+        flags.unshift({name:name, flag:candleMsg, candle:true});
+        if(flags.length>60) flags.pop();
+        renderFlags();
+        if(FLAG_URL){
+          fetch(FLAG_URL+'?name='+encodeURIComponent(name)+'&flag='+encodeURIComponent('🕯️ '+candleMsg)).catch(()=>{});
+        }
+      }
+    },120);
+  }
+  function loadCandles(){
+    if(!CANDLE_URL) return;
+    fetch(CANDLE_URL).then(r=>r.json()).then(d=>{
+      if(d&&typeof d.total==='number'){ candleTotal=d.total; document.getElementById('candleCount').textContent=candleTotal; }
+    }).catch(()=>{});
+  }
+  loadCandles();
+
+  /* ====== LẬP KÈO (FLAG) ====== */
+  let flags = [];
+  function addFlag(){
+    const n=getName();
+    const t=document.getElementById('flagText').value.trim();
+    if(!t){ alert('Hãy ghi lời chúc của bạn nhé 💌'); return; }
+    flags.unshift({name:n, flag:t});
+    document.getElementById('flagText').value='';
+    renderFlags();
+    if(FLAG_URL){
+      fetch(FLAG_URL+'?name='+encodeURIComponent(n)+'&flag='+encodeURIComponent(t)).catch(()=>{});
+    }
+    openShare('💌 Chia sẻ lời chúc của bạn!', '"' + t + '" — lời chúc gửi đến GenG. Esport. Chúc đội tuyển chiến thắng.');
+  }
+  function loadFlags(){
+    if(!FLAG_URL) return;
+    fetch(FLAG_URL).then(r=>r.json()).then(d=>{ if(Array.isArray(d)){ flags=d.filter(x=>x&&x.flag); renderFlags(); } }).catch(()=>{});
+  }
+  function renderFlags(){
+    const board=document.getElementById('flagBoard'), empty=document.getElementById('flagEmpty');
+    if(!board) return;
+    const items = flags.length ? flags : [
+      {name:'Minh', flag:'Cố lên GenG, nhất định vô địch nhé! 💛'},
+      {name:'Lan', flag:'🕯️ vừa thắp 10 ngọn nến · GEN vs KT', candle:true},
+      {name:'Huy', flag:'Duro đỉnh nhất, support quốc dân! 🐰'},
+      {name:'Trang', flag:'Mong cả đội khỏe mạnh, thi đấu vui vẻ ⭐'},
+      {name:'An', flag:'🕯️ vừa thắp 10 ngọn nến · Mọi điều tốt đẹp nhất', candle:true},
+      {name:'Bảo', flag:'GenG vô địch MSI luôn nha! 🏆'},
+      {name:'Linh', flag:'Yêu Duro và cả đội nhiều lắm 💛'},
+      {name:'Khang', flag:'🕯️ vừa thắp 10 ngọn nến · GEN vs KT', candle:true},
+      {name:'My', flag:'Chúc đội tuyển giữ vững phong độ! 🎀'},
+      {name:'Nam', flag:'Fighting GenG! Tin tưởng các bạn 🔥'}
+    ];
+    if(empty) empty.style.display = items.length ? 'none':'flex';
+    const hearts=['💌','🐰','⭐','🎀','💛','🐸','🐻','🐱'];
+    const W=board.clientWidth, H=board.clientHeight, noteW=W<640?120:150, noteH=120;
+    const cols=Math.max(2,Math.floor(W/(noteW+16))), rows=Math.max(2,Math.floor(H/(noteH+16)));
+    const cells=[]; for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push({r,c});
+    for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cells[i],cells[j]]=[cells[j],cells[i]]; }
+    board.querySelectorAll('.note').forEach(n=>n.remove());
+    items.slice(0,cells.length).forEach((m,i)=>{
+      const cell=cells[i], cellW=W/cols, cellH=H/rows;
+      let x=cell.c*cellW+(cellW-noteW)*Math.random(), y=cell.r*cellH+(cellH-noteH)*Math.random();
+      x=Math.max(6,Math.min(x,W-noteW-6)); y=Math.max(6,Math.min(y,H-noteH-6));
+      const rot=(Math.random()*10-5).toFixed(1), dur=(6+Math.random()*4).toFixed(1), delay=(Math.random()*4).toFixed(1);
+      const isCandle = m.candle || /^🕯️/.test(m.flag||'');
+      const note=document.createElement('div'); note.className='note c'+(i%6)+(isCandle?' note-candle':'');
+      note.style.left=x+'px'; note.style.top=y+'px';
+      note.style.setProperty('--rot',rot+'deg'); note.style.setProperty('--dur',dur+'s');
+      note.style.animationDelay=delay+'s'; note.style.transform='rotate('+rot+'deg)';
+      const badge = isCandle ? '🕯️' : hearts[i%hearts.length];
+      const txt = (m.flag||'').replace(/^🕯️\s*/,'');
+      note.innerHTML='<div class="n-who">'+badge+' '+esc(m.name)+'</div><div class="n-txt">'+esc(txt)+'</div>';
+      board.appendChild(note);
+    });
+  }
+  let bt; window.addEventListener('resize',()=>{ clearTimeout(bt); bt=setTimeout(renderFlags,300); });
+  renderFlags();
+  loadFlags();
+
+  /* ====== VẨY LÁ BƯỞI ====== */
+  function waveLeaf(){
+    const stage = document.getElementById('leafStage');
+    if(!stage) return;
+    const W = stage.clientWidth, H = stage.clientHeight;
+    const lw = W<640?80:120;
+    for(let k=0; k<3; k++){
+      const leaf = document.createElement('img');
+      leaf.src = 'labuoi.png';
+      leaf.className = 'flying-leaf';
+      stage.appendChild(leaf);
+      const lane = (k-1)*H*0.16;     // 3 làn lệch nhau theo chiều dọc
+      const amp = H*0.16;            // biên độ nhấp nhô zigzag
+      const steps = 6;
+      const frames = [];
+      for(let i=0;i<=steps;i++){
+        const x = -lw + (W+2*lw)*(i/steps);
+        const dy = lane + (i%2===0 ? -amp : amp);   // so với top:50%
+        frames.push({ transform:`translate(${x}px, ${dy}px) rotate(${i*140}deg)`, offset:i/steps });
+      }
+      const anim = leaf.animate(frames, {
+        duration: 1600 + k*150,
+        delay: k*120,
+        easing: 'linear'
+      });
+      anim.onfinish = ()=> leaf.remove();
+    }
+  }
+
+  /* ====== SHARE CARD (tạo ảnh để chia sẻ) ====== */
+  let shareBlob = null;
+
+  function wrapText(ctx, text, maxWidth){
+    const words = text.split(' '); const lines = []; let line = '';
+    for(const w of words){
+      const test = line ? line + ' ' + w : w;
+      if(ctx.measureText(test).width > maxWidth && line){ lines.push(line); line = w; }
+      else line = test;
+    }
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  function makeShareCard(bodyText, byName){
+    const W = 1080, H = 1350;   // tỉ lệ giấy dọc
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d');
+
+    // nền kem
+    ctx.fillStyle = '#F5E4C3'; ctx.fillRect(0,0,W,H);
+
+    // các mảng trang trí nâu/tan (blob + nét cong) ở góc
+    function blob(x,y,r,color){ ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); }
+    blob(95,120,70,'#C99B5E');
+    blob(150,90,42,'#E8C99A');
+    blob(W-120,H-150,90,'#A9743D');
+    blob(W-180,H-90,46,'#D9A86A');
+    blob(120,H-120,30,'#C99B5E');
+    // nét cong xoáy góc trên trái
+    ctx.strokeStyle='#9c6b34'; ctx.lineWidth=8; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(140,150,95,Math.PI*0.6,Math.PI*1.9); ctx.stroke();
+    // nét lượn sóng góc trên phải
+    ctx.beginPath(); ctx.moveTo(W-260,120);
+    ctx.bezierCurveTo(W-210,80,W-160,170,W-110,120);
+    ctx.bezierCurveTo(W-70,90,W-50,150,W-40,130); ctx.stroke();
+    // lá đơn giản góc phải
+    ctx.strokeStyle='#b07b41'; ctx.lineWidth=6;
+    ctx.beginPath(); ctx.moveTo(W-150,H/2-120); ctx.quadraticCurveTo(W-70,H/2-40,W-120,H/2+60); ctx.stroke();
+    // lá góc dưới trái
+    ctx.beginPath(); ctx.moveTo(110,H-330); ctx.quadraticCurveTo(60,H-250,150,H-200); ctx.stroke();
+
+    // tờ giấy trắng ở giữa
+    const m = 120, py = 170, pw = W-2*m, ph = H-2*py;
+    ctx.fillStyle = '#FFFDF8';
+    ctx.shadowColor='rgba(120,80,30,.18)'; ctx.shadowBlur=30; ctx.shadowOffsetY=10;
+    ctx.fillRect(m,py,pw,ph);
+    ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+    // viền giấy mảnh
+    ctx.strokeStyle='#EAD8B5'; ctx.lineWidth=3; ctx.strokeRect(m+14,py+14,pw-28,ph-28);
+
+    // tiêu đề nhỏ
+    ctx.textAlign='center';
+    ctx.fillStyle='#b07b41';
+    ctx.font='700 38px "Baloo 2", sans-serif';
+    ctx.fillText('🕯️ CẦU NGUYỆN CHO GEN.G', W/2, py+90);
+
+    // các dòng kẻ đứt mờ làm nền (như giấy note)
+    ctx.strokeStyle='#E7D7B8'; ctx.lineWidth=2; ctx.setLineDash([10,8]);
+    for(let ly=py+260; ly<py+ph-160; ly+=70){
+      ctx.beginPath(); ctx.moveTo(m+70,ly); ctx.lineTo(m+pw-70,ly); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // nội dung chính (đoạn cảm ơn) — chữ nâu đậm, đặt trên các dòng kẻ
+    ctx.fillStyle='#6b4a22';
+    ctx.font='600 56px "Baloo 2", sans-serif';
+    const lines = wrapText(ctx, bodyText, pw-160);
+    let y = py+300;
+    lines.forEach(l=>{ ctx.fillText(l, W/2, y); y += 70; });
+
+    // tên + hashtag dưới đáy giấy
+    ctx.fillStyle='#b07b41';
+    ctx.font='700 40px "Baloo 2", sans-serif';
+    ctx.fillText('— ' + byName + ' —', W/2, py+ph-110);
+    ctx.fillStyle='#a98b5a';
+    ctx.font='500 30px "Fredoka", sans-serif';
+    ctx.fillText('durabbit.github.io · #DURO #GENG', W/2, py+ph-60);
+
+    return cv;
+  }
+
+  function openShare(title, bodyText){
+    const byName = getName();
+    const cv = makeShareCard(bodyText, byName);
+    const dataURL = cv.toDataURL('image/png');
+    document.getElementById('sharePreview').src = dataURL;
+    document.getElementById('shareTitle').textContent = title;
+    cv.toBlob(b=>{ shareBlob = b; }, 'image/png');
+    document.getElementById('shareOverlay').classList.add('show');
+  }
+  function closeShare(){ document.getElementById('shareOverlay').classList.remove('show'); }
+
+  // nút share cố định cho phần nến — tính tổng nến đã thắp trong phiên
+  function shareCandles(){
+    const name = getName();
+    if(myCandles <= 0){ alert('Bạn chưa thắp ngọn nến nào — hãy thắp nến trước nhé 🕯️'); return; }
+    const body = 'Cảm ơn bạn ' + name + ' đã thắp ' + myCandles + ' nến cho GenG. Esport. Chúc đội tuyển chiến thắng.';
+    openShare('🕯️ Chia sẻ số nến của bạn!', body);
+  }
+
+  function downloadCard(){
+    if(!shareBlob){ return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(shareBlob);
+    a.download = 'genG-duro-share.png';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  }
+
+  async function systemShare(){
+    // chia sẻ qua bảng share hệ thống (tốt nhất trên điện thoại)
+    if(shareBlob && navigator.canShare){
+      const file = new File([shareBlob], 'genG-duro-share.png', {type:'image/png'});
+      if(navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({files:[file], title:'Cầu nguyện cho GEN.G', text:'Cùng cầu chiến thắng cho Duro và Gen.G! 🐰💛'});
+          return;
+        }catch(e){ /* user huỷ */ return; }
+      }
+    }
+    // máy tính không hỗ trợ → nhắc tải ảnh
+    alert('Trên máy tính, hãy bấm "Tải ảnh" rồi đăng lên Facebook / Instagram / Threads nhé! 🐰');
+  }
+
+  // chia sẻ LINK trang tới mạng xã hội (mở tab mới, fan tự đăng nhập & đăng)
+  const SITE_URL = 'https://durabbit.github.io/pray.html';
+  const SHARE_TEXT = 'Cùng cầu chiến thắng cho Duro và Gen.G! 🐰💛 #DURO #GENG';
+  function shareTo(net){
+    const u = encodeURIComponent(SITE_URL);
+    const t = encodeURIComponent(SHARE_TEXT);
+    let url = '';
+    if(net === 'facebook') url = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
+    else if(net === 'threads') url = 'https://www.threads.net/intent/post?text=' + t + '%20' + u;
+    else if(net === 'x') url = 'https://twitter.com/intent/tweet?text=' + t + '&url=' + u;
+    if(url) window.open(url, '_blank', 'noopener,width=600,height=600');
+  }
+  function copyLink(){
+    const done = ()=>{ const el=document.getElementById('copyOk'); el.textContent='✓ Đã sao chép link!'; setTimeout(()=>el.textContent='',2500); };
+    if(navigator.clipboard){ navigator.clipboard.writeText(SITE_URL).then(done).catch(done); }
+    else { done(); }
+  }
+
+  // đóng modal khi bấm ra ngoài
+  document.getElementById('shareOverlay').addEventListener('click', e=>{
+    if(e.target.id === 'shareOverlay') closeShare();
+  });
+</script>
+</body>
+</html>
