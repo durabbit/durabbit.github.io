@@ -750,7 +750,7 @@
 
     // ảnh fan TO ở giữa (bo tròn). Nếu chưa tải thì dùng ảnh mặc định
     const center = leafUserImg || cardImgs['chobi.jpg'];
-    const boxX=150, boxY=170, boxW=W-300, boxH=560;   // khung lớn cho ảnh
+    const boxX=180, boxY=200, boxW=W-360, boxH=520;   // khung lớn cho ảnh
     if(center && center.complete && center.naturalWidth){
       ctx.save();
       roundRect(ctx,boxX,boxY,boxW,boxH,40); ctx.clip();
@@ -761,25 +761,35 @@
       ctx.strokeStyle='#E8B93A'; ctx.lineWidth=8; roundRect(ctx,boxX,boxY,boxW,boxH,40); ctx.stroke();
     }
 
-    // lá bưởi rải XUNG QUANH ảnh (viền trên/dưới/trái/phải), không đè lên ảnh
+    // lá bưởi TO, xếp NGAY NGẮN đều theo viền 4 cạnh ô chữ nhật
     const leaf=cardImgs['labuoi.png'];
     if(leaf && leaf.complete && leaf.naturalWidth){
-      const placeLeaf=(x,y,sz,rot)=>{
+      const lsz=150;                          // lá to
+      const placeLeaf=(x,y,rot)=>{
         ctx.save(); ctx.translate(x,y); ctx.rotate(rot);
-        ctx.drawImage(leaf,-sz/2,-sz/2,sz,sz); ctx.restore();
+        ctx.drawImage(leaf,-lsz/2,-lsz/2,lsz,lsz); ctx.restore();
       };
-      const rnd=(a,b)=>a+Math.random()*(b-a);
-      // viền trái (dải hẹp bên trái ảnh)
-      for(let i=0;i<4;i++) placeLeaf(rnd(40,boxX-30), rnd(boxY+20,boxY+boxH-20), rnd(95,135), rnd(-0.6,0.6));
-      // viền phải
-      for(let i=0;i<4;i++) placeLeaf(rnd(boxX+boxW+30,W-40), rnd(boxY+20,boxY+boxH-20), rnd(95,135), rnd(-0.6,0.6));
-      // viền trên
-      for(let i=0;i<4;i++) placeLeaf(rnd(boxX+30,boxX+boxW-30), rnd(boxY-10,boxY+60), rnd(90,125), rnd(-0.5,0.5));
-      // bốn góc nhấn thêm
-      placeLeaf(boxX-10,boxY-10,130,-0.5);
-      placeLeaf(boxX+boxW+10,boxY-10,130,0.5);
-      placeLeaf(boxX-10,boxY+boxH+10,130,0.6);
-      placeLeaf(boxX+boxW+10,boxY+boxH+10,130,-0.6);
+      const topN=5, sideN=4;                  // số lá mỗi cạnh
+      // cạnh trên
+      for(let i=0;i<topN;i++){
+        const x=boxX + (boxW)*(i/(topN-1));
+        placeLeaf(x, boxY, Math.PI);          // lá chúc xuống
+      }
+      // cạnh dưới
+      for(let i=0;i<topN;i++){
+        const x=boxX + (boxW)*(i/(topN-1));
+        placeLeaf(x, boxY+boxH, 0);           // lá chúc lên
+      }
+      // cạnh trái (bỏ 2 đầu vì đã có ở trên/dưới)
+      for(let i=1;i<sideN;i++){
+        const y=boxY + (boxH)*(i/sideN);
+        placeLeaf(boxX, y, Math.PI/2);        // lá hướng phải
+      }
+      // cạnh phải
+      for(let i=1;i<sideN;i++){
+        const y=boxY + (boxH)*(i/sideN);
+        placeLeaf(boxX+boxW, y, -Math.PI/2);  // lá hướng trái
+      }
     }
 
     // chữ dưới
