@@ -56,6 +56,16 @@
 
   header{text-align:center;padding:36px 0 20px;}
   .hero-banner{width:100%;max-width:560px;border-radius:var(--r-lg);box-shadow:var(--soft);margin-bottom:22px;border:3px solid var(--white);}
+  .hero-split{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;text-align:left;}
+  .hero-left{display:flex;justify-content:center;}
+  .hero-left .hero-banner{margin-bottom:0;}
+  .hero-right{text-align:left;}
+  .hero-title{font-family:'Baloo 2';font-weight:800;font-size:clamp(3rem,9vw,6rem);line-height:.95;color:var(--black);text-shadow:0 4px 0 var(--gold),0 10px 20px rgba(160,130,40,.3);letter-spacing:1px;}
+  .hero-sub{font-family:'Baloo 2';font-weight:700;color:var(--cream);font-size:clamp(1.1rem,2.5vw,1.5rem);margin-top:10px;}
+  @media(max-width:760px){
+    .hero-split{grid-template-columns:1fr;text-align:center;gap:18px;}
+    .hero-right{text-align:center;}
+  }
   .badge{display:inline-block;background:var(--black);color:var(--gold-light);font-family:'Baloo 2';font-weight:700;font-size:.85rem;letter-spacing:1px;padding:9px 22px;border-radius:999px;box-shadow:var(--soft);margin-bottom:18px;}
   h1{font-family:'Baloo 2';font-weight:800;font-size:clamp(2.2rem,7vw,3.6rem);color:var(--black);text-shadow:0 3px 0 var(--gold),0 8px 16px rgba(160,130,40,.3);}
   header p{color:var(--cream);font-family:'Baloo 2';font-weight:600;font-size:1.05rem;margin-top:8px;}
@@ -191,10 +201,16 @@
 
 <header>
   <div class="wrap">
-    <img src="gengwin.jpg" alt="GEN.G" class="hero-banner">
-    <div class="badge">🕯️ CẦU NGUYỆN CHO GEN.G</div>
-    <h1>GEN.G nhất định chiến thắng</h1>
-    <p>Cùng nhau cầu chiến thắng cho Duro và Gen.G 🐰💛</p>
+    <div class="hero-split">
+      <div class="hero-left">
+        <img src="gengwin.jpg" alt="GEN.G" class="hero-banner">
+      </div>
+      <div class="hero-right">
+        <div class="badge">🕯️ CẦU NGUYỆN CHO GEN.G</div>
+        <h1 class="hero-title">GENGWIN</h1>
+        <p class="hero-sub">Cầu nguyện cho Gen.G 🐰💛</p>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -438,24 +454,27 @@
     const stage = document.getElementById('leafStage');
     if(!stage) return;
     const W = stage.clientWidth, H = stage.clientHeight;
-    const lw = W<640?80:120;
-    for(let k=0; k<3; k++){
+    const lw = W<640?70:100;
+    const COUNT = 16;   // rất nhiều lá mỗi lần vẩy
+    for(let k=0; k<COUNT; k++){
       const leaf = document.createElement('img');
       leaf.src = 'labuoi.png';
       leaf.className = 'flying-leaf';
+      const sz = lw*(0.6+Math.random()*0.7);
+      leaf.style.width = sz+'px'; leaf.style.height = sz+'px';
       stage.appendChild(leaf);
-      const lane = (k-1)*H*0.16;     // 3 làn lệch nhau theo chiều dọc
-      const amp = H*0.16;            // biên độ nhấp nhô zigzag
-      const steps = 6;
+      const lane = (Math.random()-0.5)*H*0.8;        // rải khắp chiều dọc
+      const amp = H*(0.08+Math.random()*0.14);       // biên độ zigzag ngẫu nhiên
+      const steps = 7;
       const frames = [];
       for(let i=0;i<=steps;i++){
         const x = -lw + (W+2*lw)*(i/steps);
-        const dy = lane + (i%2===0 ? -amp : amp);   // so với top:50%
-        frames.push({ transform:`translate(${x}px, ${dy}px) rotate(${i*140}deg)`, offset:i/steps });
+        const dy = lane + (i%2===0 ? -amp : amp);
+        frames.push({ transform:`translate(${x}px, ${dy}px) rotate(${i*150+k*30}deg)`, offset:i/steps });
       }
       const anim = leaf.animate(frames, {
-        duration: 1600 + k*150,
-        delay: k*120,
+        duration: 1500 + Math.random()*900,
+        delay: Math.random()*500,                     // toả ra rải rác
         easing: 'linear'
       });
       anim.onfinish = ()=> leaf.remove();
@@ -476,83 +495,101 @@
     return lines;
   }
 
+  // preload ảnh dùng trong thẻ share
+  const cardImgs = {};
+  ['chobi.jpg','bunny.png','frog.png','cat.png','dog.png','bear.png'].forEach(src=>{
+    const im = new Image(); im.crossOrigin='anonymous'; im.src = src; cardImgs[src] = im;
+  });
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  }
+
   function makeShareCard(bodyText, byName){
-    const W = 1080, H = 1350;   // tỉ lệ giấy dọc
+    const W = 1080, H = 1080;
     const cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
     const ctx = cv.getContext('2d');
 
-    // nền kem
-    ctx.fillStyle = '#F5E4C3'; ctx.fillRect(0,0,W,H);
+    // nền vàng gradient (giống web)
+    const bg = ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#FDF3CE'); bg.addColorStop(1,'#FCE19A');
+    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
 
-    // các mảng trang trí nâu/tan (blob + nét cong) ở góc
-    function blob(x,y,r,color){ ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); }
-    blob(95,120,70,'#C99B5E');
-    blob(150,90,42,'#E8C99A');
-    blob(W-120,H-150,90,'#A9743D');
-    blob(W-180,H-90,46,'#D9A86A');
-    blob(120,H-120,30,'#C99B5E');
-    // nét cong xoáy góc trên trái
-    ctx.strokeStyle='#9c6b34'; ctx.lineWidth=8; ctx.lineCap='round';
-    ctx.beginPath(); ctx.arc(140,150,95,Math.PI*0.6,Math.PI*1.9); ctx.stroke();
-    // nét lượn sóng góc trên phải
-    ctx.beginPath(); ctx.moveTo(W-260,120);
-    ctx.bezierCurveTo(W-210,80,W-160,170,W-110,120);
-    ctx.bezierCurveTo(W-70,90,W-50,150,W-40,130); ctx.stroke();
-    // lá đơn giản góc phải
-    ctx.strokeStyle='#b07b41'; ctx.lineWidth=6;
-    ctx.beginPath(); ctx.moveTo(W-150,H/2-120); ctx.quadraticCurveTo(W-70,H/2-40,W-120,H/2+60); ctx.stroke();
-    // lá góc dưới trái
-    ctx.beginPath(); ctx.moveTo(110,H-330); ctx.quadraticCurveTo(60,H-250,150,H-200); ctx.stroke();
-
-    // tờ giấy trắng ở giữa
-    const m = 120, py = 170, pw = W-2*m, ph = H-2*py;
-    ctx.fillStyle = '#FFFDF8';
-    ctx.shadowColor='rgba(120,80,30,.18)'; ctx.shadowBlur=30; ctx.shadowOffsetY=10;
-    ctx.fillRect(m,py,pw,ph);
-    ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
-    // viền giấy mảnh
-    ctx.strokeStyle='#EAD8B5'; ctx.lineWidth=3; ctx.strokeRect(m+14,py+14,pw-28,ph-28);
-
-    // tiêu đề nhỏ
+    // badge đen trên cùng
     ctx.textAlign='center';
-    ctx.fillStyle='#b07b41';
-    ctx.font='700 38px "Baloo 2", sans-serif';
-    ctx.fillText('🕯️ CẦU NGUYỆN CHO GEN.G', W/2, py+90);
+    ctx.font='700 34px "Baloo 2", sans-serif';
+    const badgeTxt='🕯️ CẦU NGUYỆN CHO GEN.G';
+    const bw = ctx.measureText(badgeTxt).width + 60;
+    ctx.fillStyle='#2B2620'; roundRect(ctx,(W-bw)/2,60,bw,64,32); ctx.fill();
+    ctx.fillStyle='#F5D871'; ctx.fillText(badgeTxt, W/2, 102);
 
-    // các dòng kẻ đứt mờ làm nền (như giấy note)
-    ctx.strokeStyle='#E7D7B8'; ctx.lineWidth=2; ctx.setLineDash([10,8]);
-    for(let ly=py+260; ly<py+ph-160; ly+=70){
-      ctx.beginPath(); ctx.moveTo(m+70,ly); ctx.lineTo(m+pw-70,ly); ctx.stroke();
+    // ảnh chobi ở giữa trên (bo tròn)
+    const ci = cardImgs['chobi.jpg'];
+    const imgY = 160, imgSize = 360;
+    if(ci && ci.complete && ci.naturalWidth){
+      ctx.save();
+      roundRect(ctx,(W-imgSize)/2,imgY,imgSize,imgSize,40); ctx.clip();
+      // vẽ ảnh phủ kín ô vuông
+      const s = Math.max(imgSize/ci.naturalWidth, imgSize/ci.naturalHeight);
+      const dw = ci.naturalWidth*s, dh = ci.naturalHeight*s;
+      ctx.drawImage(ci,(W-dw)/2,imgY+(imgSize-dh)/2,dw,dh);
+      ctx.restore();
+      ctx.strokeStyle='#E8B93A'; ctx.lineWidth=8; roundRect(ctx,(W-imgSize)/2,imgY,imgSize,imgSize,40); ctx.stroke();
     }
-    ctx.setLineDash([]);
 
-    // nội dung chính (đoạn cảm ơn) — chữ nâu đậm, đặt trên các dòng kẻ
-    ctx.fillStyle='#6b4a22';
-    ctx.font='600 56px "Baloo 2", sans-serif';
-    const lines = wrapText(ctx, bodyText, pw-160);
-    let y = py+300;
-    lines.forEach(l=>{ ctx.fillText(l, W/2, y); y += 70; });
+    // hộp đen chứa nội dung
+    const boxY = imgY+imgSize+40, boxX=90, boxW=W-180, boxH=H-boxY-150;
+    ctx.fillStyle='#2B2620';
+    ctx.shadowColor='rgba(120,80,30,.3)'; ctx.shadowBlur=24; ctx.shadowOffsetY=8;
+    roundRect(ctx,boxX,boxY,boxW,boxH,36); ctx.fill();
+    ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
 
-    // tên + hashtag dưới đáy giấy
-    ctx.fillStyle='#b07b41';
+    // nội dung trong hộp (chữ kem)
+    ctx.fillStyle='#F7F1E1';
+    ctx.font='600 50px "Baloo 2", sans-serif';
+    const lines = wrapText(ctx, bodyText, boxW-110);
+    let y = boxY + 90;
+    lines.forEach(l=>{ ctx.fillText(l, W/2, y); y += 66; });
+
+    // tên (vàng) trong hộp
+    ctx.fillStyle='#F5D871';
     ctx.font='700 40px "Baloo 2", sans-serif';
-    ctx.fillText('— ' + byName + ' —', W/2, py+ph-110);
-    ctx.fillStyle='#a98b5a';
-    ctx.font='500 30px "Fredoka", sans-serif';
-    ctx.fillText('durabbit.github.io · #DURO #GENG', W/2, py+ph-60);
+    ctx.fillText('— ' + byName + ' —', W/2, boxY+boxH-44);
+
+    // hàng icon con thú dưới hộp
+    const icons=['bunny.png','frog.png','cat.png','dog.png','bear.png'];
+    const isz=64, gap=20, totalW=icons.length*isz+(icons.length-1)*gap;
+    let ix=(W-totalW)/2, iy=H-110;
+    icons.forEach(name=>{
+      const im=cardImgs[name];
+      if(im&&im.complete&&im.naturalWidth) ctx.drawImage(im,ix,iy,isz,isz);
+      ix+=isz+gap;
+    });
+
+    // hashtag đáy
+    ctx.fillStyle='#9a7b32';
+    ctx.font='500 28px "Fredoka", sans-serif';
+    ctx.fillText('durabbit.github.io · #DURO #GENG', W/2, H-26);
 
     return cv;
   }
 
   function openShare(title, bodyText){
     const byName = getName();
-    const cv = makeShareCard(bodyText, byName);
-    const dataURL = cv.toDataURL('image/png');
-    document.getElementById('sharePreview').src = dataURL;
+    // đảm bảo ảnh chobi đã tải xong rồi mới vẽ (nếu chưa, đợi 1 nhịp)
+    const draw = ()=>{
+      const cv = makeShareCard(bodyText, byName);
+      document.getElementById('sharePreview').src = cv.toDataURL('image/png');
+      cv.toBlob(b=>{ shareBlob = b; }, 'image/png');
+    };
     document.getElementById('shareTitle').textContent = title;
-    cv.toBlob(b=>{ shareBlob = b; }, 'image/png');
     document.getElementById('shareOverlay').classList.add('show');
+    const ci = cardImgs['chobi.jpg'];
+    if(ci && !ci.complete){ ci.onload = draw; ci.onerror = draw; setTimeout(draw,800); }
+    draw();
   }
   function closeShare(){ document.getElementById('shareOverlay').classList.remove('show'); }
 
