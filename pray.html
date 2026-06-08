@@ -156,6 +156,20 @@
   .note.note-candle .n-who{color:#7a5e1e;}
   @keyframes noteFloat{0%,100%{transform:translateY(0) rotate(var(--rot,0deg));}50%{transform:translateY(-12px) rotate(calc(var(--rot,0deg) + 1.5deg));}}
   .board-hint{text-align:center;color:var(--ink);font-size:.85rem;margin-top:14px;opacity:.85;}
+  .board-switch{display:flex;gap:10px;justify-content:center;margin-bottom:18px;}
+  .bsw-btn{border:2px solid var(--gold);background:var(--white);color:var(--black);font-family:'Baloo 2';font-weight:700;font-size:.95rem;padding:10px 26px;border-radius:999px;cursor:pointer;transition:.2s;box-shadow:var(--soft-sm);}
+  .bsw-btn:hover{transform:translateY(-2px);}
+  .bsw-btn.active{background:var(--black);color:var(--gold-light);border-color:var(--black);}
+  /* note bảng lời chúc — màu đậm hơn */
+  #flagBoard .note.c0{background:linear-gradient(150deg,#E8B93A,#F5D871);}
+  #flagBoard .note.c1{background:linear-gradient(150deg,#F5D871,#E8B93A);}
+  #flagBoard .note.c2{background:linear-gradient(150deg,#E8B93A,#d8a52e);}
+  #flagBoard .note.c3{background:linear-gradient(150deg,#F0C94A,#E8B93A);}
+  #flagBoard .note.c4{background:linear-gradient(150deg,#E8B93A,#F0C94A);}
+  #flagBoard .note.c5{background:linear-gradient(150deg,#F5D871,#d8a52e);}
+  /* note bảng thắp nến — màu vàng nhạt */
+  #candleBoard .note{background:linear-gradient(150deg,#FFF6DD,#FCE9A8)!important;}
+  #candleBoard .note .n-who{color:#9a7b32;}
 
   .nav-link{display:block;text-align:center;margin:10px 0 0;}
   .nav-link a{color:var(--gold);font-weight:600;text-decoration:none;font-size:.9rem;}
@@ -292,10 +306,18 @@
       <div class="row"><label>Gửi lời chúc đến đội tuyển tôi yêu bạn nhé...</label><textarea id="flagText" rows="3" maxlength="200" placeholder="Vd: Cố lên GenG, nhất định vô địch nhé!"></textarea></div>
       <button class="btn" onclick="addFlag()">💌 Gửi lời chúc</button>
     </div>
+    <div class="board-switch">
+      <button class="bsw-btn active" id="swWish" onclick="switchBoard('wish')">💌 Lời chúc</button>
+      <button class="bsw-btn" id="swCandle" onclick="switchBoard('candle')">🕯️ Thắp nến</button>
+    </div>
+
     <div class="board" id="flagBoard">
       <div class="board-empty" id="flagEmpty">Chưa có lời chúc nào — hãy là người đầu tiên! 💌</div>
     </div>
-    <p class="board-hint">Mỗi lời chúc & lượt thắp nến là một tờ giấy bay lơ lửng · rê chuột để đọc · kéo ngang để xem thêm →</p>
+    <div class="board" id="candleBoard" style="display:none">
+      <div class="board-empty" id="candleEmptyBoard">Chưa có ai thắp nến — hãy thắp ngọn đầu tiên! 🕯️</div>
+    </div>
+    <p class="board-hint">Mỗi tờ giấy là một lời gửi gắm · rê chuột để đọc · kéo ngang để xem thêm →</p>
   </div>
 </section>
 
@@ -376,11 +398,11 @@
         if(CANDLE_URL){
           fetch(CANDLE_URL+'?icon='+encodeURIComponent(selectedIcon)+'&match='+encodeURIComponent(name+' · '+prayText)+'&count=10').catch(()=>{});
         }
-        // hiện lên Wish Board + lưu vào Sheet lời chúc để mọi người cùng thấy
-        const candleMsg = 'vừa thắp 10 ngọn nến 🕯️ · '+prayText;
-        flags.unshift({name:name, flag:candleMsg, candle:true});
-        if(flags.length>60) flags.pop();
-        renderFlags();
+        // hiện lên bảng Thắp nến + lưu vào Sheet để mọi người cùng thấy
+        const candleMsg = 'vừa thắp 10 ngọn nến · '+prayText;
+        candleList.unshift({name:name, flag:candleMsg});
+        if(candleList.length>80) candleList.pop();
+        renderCandleBoard();
         if(FLAG_URL){
           fetch(FLAG_URL+'?name='+encodeURIComponent(name)+'&flag='+encodeURIComponent('🕯️ '+candleMsg)).catch(()=>{});
         }
@@ -395,55 +417,72 @@
   }
   loadCandles();
 
-  /* ====== LẬP KÈO (FLAG) ====== */
-  let flags = [];
+  /* ====== LỜI CHÚC + THẮP NẾN (2 bảng) ====== */
+  let wishList = [];      // lời chúc
+  let candleList = [];    // tin thắp nến
+
+  const seedWish = [
+    {name:'Minh', flag:'Cố lên GenG, nhất định vô địch nhé! 💛'},
+    {name:'Huy', flag:'Duro đỉnh nhất, support quốc dân! 🐰'},
+    {name:'Trang', flag:'Mong cả đội khỏe mạnh, thi đấu vui vẻ ⭐'},
+    {name:'Bảo', flag:'GenG vô địch MSI luôn nha! 🏆'},
+    {name:'Linh', flag:'Yêu Duro và cả đội nhiều lắm 💛'},
+    {name:'My', flag:'Chúc đội tuyển giữ vững phong độ! 🎀'},
+    {name:'Nam', flag:'Fighting GenG! Tin tưởng các bạn 🔥'}
+  ];
+  const seedCandle = [
+    {name:'Lan', flag:'vừa thắp 10 ngọn nến · GEN vs KT'},
+    {name:'An', flag:'vừa thắp 10 ngọn nến · Mọi điều tốt đẹp nhất'},
+    {name:'Khang', flag:'vừa thắp 10 ngọn nến · GEN vs KT'}
+  ];
+
   function addFlag(){
     const n=getName();
     const t=document.getElementById('flagText').value.trim();
     if(!t){ alert('Hãy ghi lời chúc của bạn nhé 💌'); return; }
-    flags.unshift({name:n, flag:t});
+    wishList.unshift({name:n, flag:t});
     document.getElementById('flagText').value='';
-    renderFlags();
+    renderWish();
     if(FLAG_URL){
       fetch(FLAG_URL+'?name='+encodeURIComponent(n)+'&flag='+encodeURIComponent(t)).catch(()=>{});
     }
     openShare('💌 Chia sẻ lời chúc của bạn!', '"' + t + '" — lời chúc gửi đến GenG. Esport. Chúc đội tuyển chiến thắng.');
   }
+
   function loadFlags(){
     if(!FLAG_URL) return;
-    fetch(FLAG_URL).then(r=>r.json()).then(d=>{ if(Array.isArray(d)){ flags=d.filter(x=>x&&x.flag); renderFlags(); } }).catch(()=>{});
+    fetch(FLAG_URL).then(r=>r.json()).then(d=>{
+      if(Array.isArray(d)){
+        // tách: tin có 🕯️ là nến, còn lại là lời chúc
+        wishList = []; candleList = [];
+        d.filter(x=>x&&x.flag).forEach(x=>{
+          if(/^🕯️/.test(x.flag) || /thắp.*nến/i.test(x.flag)){
+            candleList.push({name:x.name, flag:(x.flag||'').replace(/^🕯️\s*/,'')});
+          } else {
+            wishList.push({name:x.name, flag:x.flag});
+          }
+        });
+        renderWish(); renderCandleBoard();
+      }
+    }).catch(()=>{});
   }
-  function renderFlags(){
-    const board=document.getElementById('flagBoard'), empty=document.getElementById('flagEmpty');
+
+  // render chung cho 1 board (kiểu trang cuộn ngang)
+  function renderBoard(boardId, emptyId, list, seed, badges, candleStyle){
+    const board=document.getElementById(boardId), empty=document.getElementById(emptyId);
     if(!board) return;
-    const items = flags.length ? flags : [
-      {name:'Minh', flag:'Cố lên GenG, nhất định vô địch nhé! 💛'},
-      {name:'Lan', flag:'🕯️ vừa thắp 10 ngọn nến · GEN vs KT', candle:true},
-      {name:'Huy', flag:'Duro đỉnh nhất, support quốc dân! 🐰'},
-      {name:'Trang', flag:'Mong cả đội khỏe mạnh, thi đấu vui vẻ ⭐'},
-      {name:'An', flag:'🕯️ vừa thắp 10 ngọn nến · Mọi điều tốt đẹp nhất', candle:true},
-      {name:'Bảo', flag:'GenG vô địch MSI luôn nha! 🏆'},
-      {name:'Linh', flag:'Yêu Duro và cả đội nhiều lắm 💛'},
-      {name:'Khang', flag:'🕯️ vừa thắp 10 ngọn nến · GEN vs KT', candle:true},
-      {name:'My', flag:'Chúc đội tuyển giữ vững phong độ! 🎀'},
-      {name:'Nam', flag:'Fighting GenG! Tin tưởng các bạn 🔥'}
-    ];
+    const items = list.length ? list : seed;
     if(empty) empty.style.display = items.length ? 'none':'flex';
-    const hearts=['💌','🐰','⭐','🎀','💛','🐸','🐻','🐱'];
     const W=board.clientWidth, H=board.clientHeight, noteW=W<640?120:150, noteH=120;
     const cols=Math.max(2,Math.floor(W/(noteW+16))), rows=Math.max(2,Math.floor(H/(noteH+16)));
-    const perPage=cols*rows;                       // số note mỗi trang
+    const perPage=cols*rows;
     const pageCount=Math.max(1, Math.ceil(items.length/perPage));
-
-    // dựng lại track + các trang
     board.querySelectorAll('.board-track').forEach(t=>t.remove());
     const track=document.createElement('div'); track.className='board-track';
     board.appendChild(track);
-
     for(let p=0; p<pageCount; p++){
       const page=document.createElement('div'); page.className='board-page';
       track.appendChild(page);
-      // các ô trong trang, xáo trộn vị trí
       const cells=[]; for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push({r,c});
       for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cells[i],cells[j]]=[cells[j],cells[i]]; }
       const pageItems=items.slice(p*perPage,(p+1)*perPage);
@@ -453,20 +492,36 @@
         let x=cell.c*cellW+(cellW-noteW)*Math.random(), y=cell.r*cellH+(cellH-noteH)*Math.random();
         x=Math.max(6,Math.min(x,W-noteW-6)); y=Math.max(6,Math.min(y,H-noteH-6));
         const rot=(Math.random()*10-5).toFixed(1), dur=(6+Math.random()*4).toFixed(1), delay=(Math.random()*4).toFixed(1);
-        const isCandle = m.candle || /^🕯️/.test(m.flag||'');
-        const note=document.createElement('div'); note.className='note c'+(i%6)+(isCandle?' note-candle':'');
+        const note=document.createElement('div'); note.className='note c'+(i%6)+(candleStyle?' note-candle':'');
         note.style.left=x+'px'; note.style.top=y+'px';
         note.style.setProperty('--rot',rot+'deg'); note.style.setProperty('--dur',dur+'s');
         note.style.animationDelay=delay+'s'; note.style.transform='rotate('+rot+'deg)';
-        const badge = isCandle ? '🕯️' : hearts[i%hearts.length];
-        const txt = (m.flag||'').replace(/^🕯️\s*/,'');
-        note.innerHTML='<div class="n-who">'+badge+' '+esc(m.name)+'</div><div class="n-txt">'+esc(txt)+'</div>';
+        const badge = candleStyle ? '🕯️' : badges[i%badges.length];
+        note.innerHTML='<div class="n-who">'+badge+' '+esc(m.name)+'</div><div class="n-txt">'+esc(m.flag||'')+'</div>';
         page.appendChild(note);
       });
     }
   }
-  let bt; window.addEventListener('resize',()=>{ clearTimeout(bt); bt=setTimeout(renderFlags,300); });
-  renderFlags();
+  function renderWish(){ renderBoard('flagBoard','flagEmpty',wishList,seedWish,['💌','🐰','⭐','🎀','💛','🐸','🐻','🐱'],false); }
+  function renderCandleBoard(){ renderBoard('candleBoard','candleEmptyBoard',candleList,seedCandle,['🕯️'],true); }
+
+  // chuyển đổi giữa 2 bảng
+  function switchBoard(which){
+    const fb=document.getElementById('flagBoard'), cb=document.getElementById('candleBoard');
+    const sw=document.getElementById('swWish'), sc=document.getElementById('swCandle');
+    if(which==='wish'){
+      fb.style.display='block'; cb.style.display='none';
+      sw.classList.add('active'); sc.classList.remove('active');
+      renderWish();
+    } else {
+      fb.style.display='none'; cb.style.display='block';
+      sc.classList.add('active'); sw.classList.remove('active');
+      renderCandleBoard();
+    }
+  }
+
+  let bt; window.addEventListener('resize',()=>{ clearTimeout(bt); bt=setTimeout(()=>{ renderWish(); renderCandleBoard(); },300); });
+  renderWish(); renderCandleBoard();
   loadFlags();
 
   /* ====== VẨY LÁ BƯỞI ====== */
