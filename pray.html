@@ -130,6 +130,7 @@
   .leaf-wrap{max-width:760px;margin:0 auto;text-align:center;}
   .leaf-stage{position:relative;width:100%;height:420px;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(160deg,#fffbed,var(--gold-soft));box-shadow:var(--soft);border:2px solid var(--gold);margin-bottom:22px;display:flex;align-items:center;justify-content:center;}
   .leaf-stage .stage-img{max-width:78%;max-height:88%;border-radius:var(--r-md);box-shadow:0 8px 22px rgba(120,80,30,.25);border:3px solid var(--white);}
+  .leaf-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
   .flying-leaf{position:absolute;width:120px;height:120px;left:-140px;top:50%;pointer-events:none;z-index:5;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));}
   @media(max-width:640px){.leaf-stage{height:300px;}.flying-leaf{width:80px;height:80px;}}
   .flag-wrap{max-width:720px;margin:0 auto;}
@@ -300,9 +301,13 @@
   <div class="wrap leaf-wrap">
     <div class="sec-head"><h2>Vẩy lá bưởi xua vận xui 🍀</h2><p>Mỗi lần vẩy là một lần xua đi điều xui xẻo cho Gen.G!</p></div>
     <div class="leaf-stage" id="leafStage">
-      <img src="gengwin.jpg" alt="GEN.G" class="stage-img">
+      <img src="gengwin.jpg" alt="GEN.G" class="stage-img" id="leafImg">
     </div>
-    <button class="btn" onclick="waveLeaf()">🍀 Vẩy lá bưởi</button>
+    <input type="file" id="leafUpload" accept="image/*" style="display:none" onchange="uploadLeafImg(event)">
+    <div class="leaf-btns">
+      <button class="btn btn-share" onclick="document.getElementById('leafUpload').click()">📷 Tải ảnh của bạn</button>
+      <button class="btn" onclick="waveLeaf()">🍀 Vẩy lá bưởi</button>
+    </div>
   </div>
 </section>
 
@@ -534,6 +539,15 @@
   loadFlags();
 
   /* ====== VẨY LÁ BƯỞI ====== */
+  function uploadLeafImg(e){
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    const img = document.getElementById('leafImg');
+    img.src = url;
+    img.alt = 'Ảnh của bạn';
+  }
+
   function waveLeaf(){
     const stage = document.getElementById('leafStage');
     if(!stage) return;
