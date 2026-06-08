@@ -307,6 +307,7 @@
     <div class="leaf-btns">
       <button class="btn btn-share" onclick="document.getElementById('leafUpload').click()">📷 Tải ảnh của bạn</button>
       <button class="btn" onclick="waveLeaf()">🍀 Vẩy lá bưởi</button>
+      <button class="btn btn-share" onclick="shareLeaf()">📸 Tạo ảnh lá bưởi</button>
     </div>
   </div>
 </section>
@@ -539,6 +540,7 @@
   loadFlags();
 
   /* ====== VẨY LÁ BƯỞI ====== */
+  let leafUserImg = null;   // ảnh fan tải lên (để vẽ canvas)
   function uploadLeafImg(e){
     const file = e.target.files && e.target.files[0];
     if(!file) return;
@@ -546,6 +548,8 @@
     const img = document.getElementById('leafImg');
     img.src = url;
     img.alt = 'Ảnh của bạn';
+    // lưu bản Image để vẽ lên canvas khi tạo ảnh
+    const im = new Image(); im.onload = ()=>{ leafUserImg = im; }; im.src = url;
   }
 
   function waveLeaf(){
@@ -595,7 +599,7 @@
 
   // preload ảnh dùng trong thẻ share
   const cardImgs = {};
-  ['chobi.jpg','bunny.png','frog.png','cat.png','dog.png','bear.png'].forEach(src=>{
+  ['chobi.jpg','bunny.png','frog.png','cat.png','dog.png','bear.png','labuoi.png'].forEach(src=>{
     const im = new Image(); im.crossOrigin='anonymous'; im.src = src; cardImgs[src] = im;
   });
 
@@ -724,6 +728,87 @@
     if(myCandles <= 0){ alert('Bạn chưa thắp ngọn nến nào — hãy thắp nến trước nhé 🕯️'); return; }
     const body = 'Cảm ơn bạn ' + name + ' đã thắp ' + myCandles + ' nến cho GenG. Esport. Chúc đội tuyển chiến thắng.';
     openShare('🕯️ Chia sẻ số nến của bạn!', body);
+  }
+
+  // tạo ảnh lá bưởi: ảnh fan ở giữa, nhiều lá bao quanh, kèm QR
+  function makeLeafCard(){
+    const W=1080, H=1080;
+    const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    const ctx=cv.getContext('2d');
+    // nền vàng gradient
+    const bg=ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#FDF3CE'); bg.addColorStop(1,'#FCE9A8');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+    // badge đen trên cùng
+    ctx.textAlign='center';
+    ctx.font='700 34px "Baloo 2", sans-serif';
+    const badgeTxt='🍀 VẨY LÁ BƯỞI XUA VẬN XUI';
+    const bw=ctx.measureText(badgeTxt).width+60;
+    ctx.fillStyle='#2B2620'; roundRect(ctx,(W-bw)/2,50,bw,62,31); ctx.fill();
+    ctx.fillStyle='#F5D871'; ctx.fillText(badgeTxt,W/2,90);
+
+    // ảnh fan ở giữa (bo tròn). Nếu chưa tải thì dùng ảnh GenG
+    const center = leafUserImg || cardImgs['chobi.jpg'];
+    const cx=W/2, cy=H/2+20, R=300;
+    if(center && center.complete && center.naturalWidth){
+      ctx.save();
+      roundRect(ctx,cx-R/2,cy-R/2,R,R,40); ctx.clip();
+      const s=Math.max(R/center.naturalWidth,R/center.naturalHeight);
+      const dw=center.naturalWidth*s, dh=center.naturalHeight*s;
+      ctx.drawImage(center,cx-dw/2,cy-dh/2,dw,dh);
+      ctx.restore();
+      ctx.strokeStyle='#E8B93A'; ctx.lineWidth=8; roundRect(ctx,cx-R/2,cy-R/2,R,R,40); ctx.stroke();
+    }
+
+    // nhiều lá bưởi bao quanh ảnh (vòng tròn)
+    const leaf=cardImgs['labuoi.png'];
+    if(leaf && leaf.complete && leaf.naturalWidth){
+      const N=14, ringR=R/2+150, lsz=150;
+      for(let i=0;i<N;i++){
+        const ang=(i/N)*Math.PI*2 - Math.PI/2;
+        const lx=cx+Math.cos(ang)*ringR, ly=cy+Math.sin(ang)*ringR;
+        ctx.save();
+        ctx.translate(lx,ly);
+        ctx.rotate(ang+Math.PI/2);
+        ctx.drawImage(leaf,-lsz/2,-lsz/2,lsz,lsz);
+        ctx.restore();
+      }
+    }
+
+    // chữ dưới
+    ctx.fillStyle='#2B2620';
+    ctx.font='800 52px "Baloo 2", sans-serif';
+    ctx.fillText('Xua hết vận xui cho Gen.G! 🍀', W/2, H-150);
+
+    // QR góc dưới phải
+    if(qrImg && qrImg.complete && qrImg.naturalWidth){
+      const qs=130, qx=W-qs-50, qy=H-qs-50;
+      ctx.fillStyle='#fff'; roundRect(ctx,qx-12,qy-12,qs+24,qs+24,16); ctx.fill();
+      ctx.drawImage(qrImg,qx,qy,qs,qs);
+    }
+    ctx.fillStyle='#9a7b32'; ctx.textAlign='left';
+    ctx.font='500 26px "Fredoka", sans-serif';
+    ctx.fillText('Quét mã để cùng', 50, H-90);
+    ctx.fillText('cầu nguyện cho Gen.G', 50, H-58);
+    ctx.textAlign='center';
+
+    return cv;
+  }
+
+  function shareLeaf(){
+    const draw=()=>{
+      const cv=makeLeafCard();
+      document.getElementById('sharePreview').src=cv.toDataURL('image/png');
+      cv.toBlob(b=>{ shareBlob=b; }, 'image/png');
+    };
+    document.getElementById('shareTitle').textContent='🍀 Chia sẻ ảnh lá bưởi của bạn!';
+    document.getElementById('shareOverlay').classList.add('show');
+    draw();
+    const leaf=cardImgs['labuoi.png'];
+    if(leaf && !leaf.complete){ leaf.onload=draw; }
+    if(qrImg && !qrImg.complete){ qrImg.onload=draw; }
+    setTimeout(draw,500);
   }
 
   function downloadCard(){
