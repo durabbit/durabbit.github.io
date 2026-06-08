@@ -730,7 +730,7 @@
     openShare('🕯️ Chia sẻ số nến của bạn!', body);
   }
 
-  // tạo ảnh lá bưởi: ảnh fan ở giữa, nhiều lá bao quanh, kèm QR
+  // tạo ảnh lá bưởi: ảnh fan to ở giữa, nhiều lá rải xung quanh, kèm QR
   function makeLeafCard(){
     const W=1080, H=1080;
     const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
@@ -745,40 +745,46 @@
     ctx.font='700 34px "Baloo 2", sans-serif';
     const badgeTxt='🍀 VẨY LÁ BƯỞI XUA VẬN XUI';
     const bw=ctx.measureText(badgeTxt).width+60;
-    ctx.fillStyle='#2B2620'; roundRect(ctx,(W-bw)/2,50,bw,62,31); ctx.fill();
-    ctx.fillStyle='#F5D871'; ctx.fillText(badgeTxt,W/2,90);
+    ctx.fillStyle='#2B2620'; roundRect(ctx,(W-bw)/2,46,bw,60,30); ctx.fill();
+    ctx.fillStyle='#F5D871'; ctx.fillText(badgeTxt,W/2,85);
 
-    // ảnh fan ở giữa (bo tròn). Nếu chưa tải thì dùng ảnh GenG
+    // ảnh fan TO ở giữa (bo tròn). Nếu chưa tải thì dùng ảnh mặc định
     const center = leafUserImg || cardImgs['chobi.jpg'];
-    const cx=W/2, cy=H/2+20, R=300;
+    const boxX=150, boxY=170, boxW=W-300, boxH=560;   // khung lớn cho ảnh
     if(center && center.complete && center.naturalWidth){
       ctx.save();
-      roundRect(ctx,cx-R/2,cy-R/2,R,R,40); ctx.clip();
-      const s=Math.max(R/center.naturalWidth,R/center.naturalHeight);
+      roundRect(ctx,boxX,boxY,boxW,boxH,40); ctx.clip();
+      const s=Math.max(boxW/center.naturalWidth, boxH/center.naturalHeight);
       const dw=center.naturalWidth*s, dh=center.naturalHeight*s;
-      ctx.drawImage(center,cx-dw/2,cy-dh/2,dw,dh);
+      ctx.drawImage(center, boxX+(boxW-dw)/2, boxY+(boxH-dh)/2, dw, dh);
       ctx.restore();
-      ctx.strokeStyle='#E8B93A'; ctx.lineWidth=8; roundRect(ctx,cx-R/2,cy-R/2,R,R,40); ctx.stroke();
+      ctx.strokeStyle='#E8B93A'; ctx.lineWidth=8; roundRect(ctx,boxX,boxY,boxW,boxH,40); ctx.stroke();
     }
 
-    // nhiều lá bưởi bao quanh ảnh (vòng tròn)
+    // lá bưởi rải XUNG QUANH ảnh (viền trên/dưới/trái/phải), không đè lên ảnh
     const leaf=cardImgs['labuoi.png'];
     if(leaf && leaf.complete && leaf.naturalWidth){
-      const N=14, ringR=R/2+150, lsz=150;
-      for(let i=0;i<N;i++){
-        const ang=(i/N)*Math.PI*2 - Math.PI/2;
-        const lx=cx+Math.cos(ang)*ringR, ly=cy+Math.sin(ang)*ringR;
-        ctx.save();
-        ctx.translate(lx,ly);
-        ctx.rotate(ang+Math.PI/2);
-        ctx.drawImage(leaf,-lsz/2,-lsz/2,lsz,lsz);
-        ctx.restore();
-      }
+      const placeLeaf=(x,y,sz,rot)=>{
+        ctx.save(); ctx.translate(x,y); ctx.rotate(rot);
+        ctx.drawImage(leaf,-sz/2,-sz/2,sz,sz); ctx.restore();
+      };
+      const rnd=(a,b)=>a+Math.random()*(b-a);
+      // viền trái (dải hẹp bên trái ảnh)
+      for(let i=0;i<4;i++) placeLeaf(rnd(40,boxX-30), rnd(boxY+20,boxY+boxH-20), rnd(95,135), rnd(-0.6,0.6));
+      // viền phải
+      for(let i=0;i<4;i++) placeLeaf(rnd(boxX+boxW+30,W-40), rnd(boxY+20,boxY+boxH-20), rnd(95,135), rnd(-0.6,0.6));
+      // viền trên
+      for(let i=0;i<4;i++) placeLeaf(rnd(boxX+30,boxX+boxW-30), rnd(boxY-10,boxY+60), rnd(90,125), rnd(-0.5,0.5));
+      // bốn góc nhấn thêm
+      placeLeaf(boxX-10,boxY-10,130,-0.5);
+      placeLeaf(boxX+boxW+10,boxY-10,130,0.5);
+      placeLeaf(boxX-10,boxY+boxH+10,130,0.6);
+      placeLeaf(boxX+boxW+10,boxY+boxH+10,130,-0.6);
     }
 
     // chữ dưới
     ctx.fillStyle='#2B2620';
-    ctx.font='800 52px "Baloo 2", sans-serif';
+    ctx.font='800 50px "Baloo 2", sans-serif';
     ctx.fillText('Xua hết vận xui cho Gen.G! 🍀', W/2, H-150);
 
     // QR góc dưới phải
