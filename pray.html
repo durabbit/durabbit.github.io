@@ -188,6 +188,7 @@
     .icon-opt{width:58px;height:58px;}
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -501,6 +502,24 @@
     const im = new Image(); im.crossOrigin='anonymous'; im.src = src; cardImgs[src] = im;
   });
 
+  // tạo mã QR dẫn tới trang, lưu thành ảnh để vẽ lên thẻ share
+  const qrImg = new Image();
+  (function makeQR(){
+    try{
+      const holder = document.createElement('div');
+      holder.style.display = 'none';
+      document.body.appendChild(holder);
+      new QRCode(holder, { text:'https://durabbit.github.io/pray', width:240, height:240,
+        colorDark:'#2B2620', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M });
+      setTimeout(()=>{
+        const c = holder.querySelector('canvas');
+        const img = holder.querySelector('img');
+        if(c){ qrImg.src = c.toDataURL('image/png'); }
+        else if(img){ qrImg.src = img.src; }
+      }, 300);
+    }catch(e){ /* nếu thư viện chưa tải, bỏ qua QR */ }
+  })();
+
   function roundRect(ctx,x,y,w,h,r){
     ctx.beginPath();
     ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
@@ -508,7 +527,7 @@
   }
 
   function makeShareCard(bodyText, byName){
-    const W = 1080, H = 1080;
+    const W = 1080, H = 1320;
     const cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
     const ctx = cv.getContext('2d');
@@ -541,7 +560,7 @@
     }
 
     // hộp đen chứa nội dung
-    const boxY = imgY+imgSize+40, boxX=90, boxW=W-180, boxH=H-boxY-150;
+    const boxY = imgY+imgSize+40, boxX=90, boxW=W-180, boxH=380;
     ctx.fillStyle='#2B2620';
     ctx.shadowColor='rgba(120,80,30,.3)'; ctx.shadowBlur=24; ctx.shadowOffsetY=8;
     roundRect(ctx,boxX,boxY,boxW,boxH,36); ctx.fill();
@@ -561,25 +580,31 @@
 
     // hàng icon con thú dưới hộp
     const icons=['bunny.png','frog.png','cat.png','dog.png','bear.png'];
-    const isz=64, gap=20, totalW=icons.length*isz+(icons.length-1)*gap;
-    let ix=(W-totalW)/2, iy=H-110;
+    const isz=58, gap=18, totalW=icons.length*isz+(icons.length-1)*gap;
+    let ix=(W-totalW)/2, iy=boxY+boxH+30;
     icons.forEach(name=>{
       const im=cardImgs[name];
       if(im&&im.complete&&im.naturalWidth) ctx.drawImage(im,ix,iy,isz,isz);
       ix+=isz+gap;
     });
 
-    // hashtag đáy
+    // mã QR ở đáy (thay cho link chữ)
+    const qrSize=180, qrX=(W-qrSize)/2, qrY=iy+isz+24;
+    if(qrImg && qrImg.complete && qrImg.naturalWidth){
+      // nền trắng bo tròn quanh QR
+      ctx.fillStyle='#fff';
+      roundRect(ctx,qrX-16,qrY-16,qrSize+32,qrSize+32,20); ctx.fill();
+      ctx.drawImage(qrImg,qrX,qrY,qrSize,qrSize);
+    }
     ctx.fillStyle='#9a7b32';
-    ctx.font='500 28px "Fredoka", sans-serif';
-    ctx.fillText('durabbit.github.io · #DURO #GENG', W/2, H-26);
+    ctx.font='600 30px "Baloo 2", sans-serif';
+    ctx.fillText('Quét mã để cùng cầu nguyện cho Gen.G', W/2, qrY+qrSize+50);
 
     return cv;
   }
 
   function openShare(title, bodyText){
     const byName = getName();
-    // đảm bảo ảnh chobi đã tải xong rồi mới vẽ (nếu chưa, đợi 1 nhịp)
     const draw = ()=>{
       const cv = makeShareCard(bodyText, byName);
       document.getElementById('sharePreview').src = cv.toDataURL('image/png');
@@ -587,9 +612,12 @@
     };
     document.getElementById('shareTitle').textContent = title;
     document.getElementById('shareOverlay').classList.add('show');
-    const ci = cardImgs['chobi.jpg'];
-    if(ci && !ci.complete){ ci.onload = draw; ci.onerror = draw; setTimeout(draw,800); }
     draw();
+    // vẽ lại sau khi ảnh chobi / QR tải xong (phòng khi chưa kịp)
+    const ci = cardImgs['chobi.jpg'];
+    if(ci && !ci.complete){ ci.onload = draw; ci.onerror = draw; }
+    if(qrImg && !qrImg.complete){ qrImg.onload = draw; }
+    setTimeout(draw, 500);
   }
   function closeShare(){ document.getElementById('shareOverlay').classList.remove('show'); }
 
