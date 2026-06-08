@@ -135,7 +135,12 @@
   .flag-form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,168,92,.2);}
 
   /* ===== WISH BOARD ===== */
-  .board{position:relative;width:100%;height:600px;border-radius:var(--r-lg);overflow:hidden;background:radial-gradient(circle at 20% 25%, #fff8de, transparent 50%),radial-gradient(circle at 80% 20%, var(--gold-soft), transparent 50%),linear-gradient(160deg,#fffbed,#FCE9A8);box-shadow:var(--soft);border:2px solid var(--gold);}
+  .board{position:relative;width:100%;height:600px;border-radius:var(--r-lg);overflow-x:auto;overflow-y:hidden;background:radial-gradient(circle at 20% 25%, #fff8de, transparent 50%),radial-gradient(circle at 80% 20%, var(--gold-soft), transparent 50%),linear-gradient(160deg,#fffbed,#FCE9A8);box-shadow:var(--soft);border:2px solid var(--gold);scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+  .board::-webkit-scrollbar{height:10px;}
+  .board::-webkit-scrollbar-track{background:var(--gold-soft);border-radius:8px;}
+  .board::-webkit-scrollbar-thumb{background:var(--gold);border-radius:8px;}
+  .board-track{position:relative;height:100%;display:flex;}
+  .board-page{position:relative;flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;}
   .board-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink);font-style:italic;opacity:.7;font-size:.95rem;text-align:center;padding:20px;}
   .note{position:absolute;width:160px;padding:14px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.5);font-size:.82rem;color:var(--black);transition:transform .3s ease,box-shadow .3s ease;animation:noteFloat var(--dur,7s) ease-in-out infinite;}
   .note:hover{transform:scale(1.08) rotate(0deg)!important;box-shadow:0 14px 30px rgba(201,168,92,.5);z-index:20;}
@@ -229,12 +234,12 @@
 <!-- ===== THẮP NẾN ===== -->
 <section id="candles">
   <div class="wrap candle-wrap">
-    <div class="sec-head"><h2>Thắp nến cầu nguyện 🕯️</h2><p>Chọn linh vật may mắn, chọn điều cầu nguyện, rồi thắp nến nhé!</p></div>
+    <div class="sec-head"><h2>Thắp nến manifest 🕯️</h2><p>Chọn icon may mắn, chọn điều cầu nguyện, rồi thắp nến nhé!</p></div>
     <div class="candle-board">
       <div class="candle-count" id="candleCount">0</div>
       <div class="candle-count-lbl">Ngọn nến đã thắp cho GEN.G</div>
 
-      <div class="step-label">Chọn linh vật may mắn</div>
+      <div class="step-label">Chọn icon may mắn</div>
       <div class="icon-picker">
         <button class="icon-opt" data-icon="frog.png" onclick="pickIcon(this)"><img src="frog.png" alt="frog"></button>
         <button class="icon-opt" data-icon="bear.png" onclick="pickIcon(this)"><img src="bear.png" alt="bear"></button>
@@ -290,7 +295,7 @@
     <div class="board" id="flagBoard">
       <div class="board-empty" id="flagEmpty">Chưa có lời chúc nào — hãy là người đầu tiên! 💌</div>
     </div>
-    <p class="board-hint">Mỗi lời chúc & lượt thắp nến là một tờ giấy bay lơ lửng · rê chuột để đọc ✨</p>
+    <p class="board-hint">Mỗi lời chúc & lượt thắp nến là một tờ giấy bay lơ lửng · rê chuột để đọc · kéo ngang để xem thêm →</p>
   </div>
 </section>
 
@@ -427,24 +432,38 @@
     const hearts=['💌','🐰','⭐','🎀','💛','🐸','🐻','🐱'];
     const W=board.clientWidth, H=board.clientHeight, noteW=W<640?120:150, noteH=120;
     const cols=Math.max(2,Math.floor(W/(noteW+16))), rows=Math.max(2,Math.floor(H/(noteH+16)));
-    const cells=[]; for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push({r,c});
-    for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cells[i],cells[j]]=[cells[j],cells[i]]; }
-    board.querySelectorAll('.note').forEach(n=>n.remove());
-    items.slice(0,cells.length).forEach((m,i)=>{
-      const cell=cells[i], cellW=W/cols, cellH=H/rows;
-      let x=cell.c*cellW+(cellW-noteW)*Math.random(), y=cell.r*cellH+(cellH-noteH)*Math.random();
-      x=Math.max(6,Math.min(x,W-noteW-6)); y=Math.max(6,Math.min(y,H-noteH-6));
-      const rot=(Math.random()*10-5).toFixed(1), dur=(6+Math.random()*4).toFixed(1), delay=(Math.random()*4).toFixed(1);
-      const isCandle = m.candle || /^🕯️/.test(m.flag||'');
-      const note=document.createElement('div'); note.className='note c'+(i%6)+(isCandle?' note-candle':'');
-      note.style.left=x+'px'; note.style.top=y+'px';
-      note.style.setProperty('--rot',rot+'deg'); note.style.setProperty('--dur',dur+'s');
-      note.style.animationDelay=delay+'s'; note.style.transform='rotate('+rot+'deg)';
-      const badge = isCandle ? '🕯️' : hearts[i%hearts.length];
-      const txt = (m.flag||'').replace(/^🕯️\s*/,'');
-      note.innerHTML='<div class="n-who">'+badge+' '+esc(m.name)+'</div><div class="n-txt">'+esc(txt)+'</div>';
-      board.appendChild(note);
-    });
+    const perPage=cols*rows;                       // số note mỗi trang
+    const pageCount=Math.max(1, Math.ceil(items.length/perPage));
+
+    // dựng lại track + các trang
+    board.querySelectorAll('.board-track').forEach(t=>t.remove());
+    const track=document.createElement('div'); track.className='board-track';
+    board.appendChild(track);
+
+    for(let p=0; p<pageCount; p++){
+      const page=document.createElement('div'); page.className='board-page';
+      track.appendChild(page);
+      // các ô trong trang, xáo trộn vị trí
+      const cells=[]; for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push({r,c});
+      for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cells[i],cells[j]]=[cells[j],cells[i]]; }
+      const pageItems=items.slice(p*perPage,(p+1)*perPage);
+      pageItems.forEach((m,idx)=>{
+        const i=p*perPage+idx;
+        const cell=cells[idx], cellW=W/cols, cellH=H/rows;
+        let x=cell.c*cellW+(cellW-noteW)*Math.random(), y=cell.r*cellH+(cellH-noteH)*Math.random();
+        x=Math.max(6,Math.min(x,W-noteW-6)); y=Math.max(6,Math.min(y,H-noteH-6));
+        const rot=(Math.random()*10-5).toFixed(1), dur=(6+Math.random()*4).toFixed(1), delay=(Math.random()*4).toFixed(1);
+        const isCandle = m.candle || /^🕯️/.test(m.flag||'');
+        const note=document.createElement('div'); note.className='note c'+(i%6)+(isCandle?' note-candle':'');
+        note.style.left=x+'px'; note.style.top=y+'px';
+        note.style.setProperty('--rot',rot+'deg'); note.style.setProperty('--dur',dur+'s');
+        note.style.animationDelay=delay+'s'; note.style.transform='rotate('+rot+'deg)';
+        const badge = isCandle ? '🕯️' : hearts[i%hearts.length];
+        const txt = (m.flag||'').replace(/^🕯️\s*/,'');
+        note.innerHTML='<div class="n-who">'+badge+' '+esc(m.name)+'</div><div class="n-txt">'+esc(txt)+'</div>';
+        page.appendChild(note);
+      });
+    }
   }
   let bt; window.addEventListener('resize',()=>{ clearTimeout(bt); bt=setTimeout(renderFlags,300); });
   renderFlags();
