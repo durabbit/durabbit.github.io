@@ -54,6 +54,35 @@
   .cs-link:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(252,165,165,.6);}
 
   footer{text-align:center;padding:30px 20px 50px;color:var(--ink);font-size:.85rem;}
+  /* ===== MAKER ===== */
+  .maker-card{max-width:560px;}
+  .frame-pick{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 22px;}
+  .frame-opt{border:2px solid var(--pink-soft);background:var(--white);color:var(--ink-deep);font-family:'Baloo 2';font-weight:700;font-size:.92rem;padding:10px 22px;border-radius:999px;cursor:pointer;transition:.2s;}
+  .frame-opt:hover{transform:translateY(-2px);border-color:var(--coral);}
+  .frame-opt.active{background:var(--coral);color:#fff;border-color:var(--coral);}
+  .maker-stage{position:relative;width:100%;margin:0 auto;border-radius:var(--r-md);overflow:hidden;background:#f3e6e6;box-shadow:var(--soft-sm);}
+  .frame-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;}
+  .photo-slot{position:absolute;overflow:hidden;background:#e8d4d4;z-index:2;cursor:grab;touch-action:none;}
+  .photo-slot.empty{display:flex;align-items:center;justify-content:center;z-index:6;cursor:pointer;}
+  .photo-slot.empty .slot-hint{font-family:'Baloo 2';font-weight:700;color:#fff;font-size:.85rem;text-align:center;background:rgba(252,165,165,.85);padding:8px 14px;border-radius:12px;pointer-events:none;}
+  .photo-slot img{position:absolute;left:0;top:0;transform-origin:0 0;user-select:none;pointer-events:none;max-width:none;}
+  .slot-zoom{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);z-index:7;display:none;gap:6px;background:rgba(255,253,251,.92);padding:4px 8px;border-radius:999px;box-shadow:var(--soft-sm);}
+  .photo-slot.filled .slot-zoom{display:flex;}
+  .slot-zoom button{width:26px;height:26px;border:none;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;cursor:pointer;font-size:1rem;line-height:1;}
+  .maker-actions{margin-top:22px;}
+  /* share modal */
+  .share-overlay{position:fixed;inset:0;background:rgba(122,93,93,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+  .share-overlay.show{display:flex;}
+  .share-modal{background:var(--white);border:3px solid var(--pink-soft);border-radius:var(--r-lg);padding:22px;max-width:420px;width:100%;text-align:center;box-shadow:var(--soft);max-height:92vh;overflow-y:auto;}
+  .share-modal h3{font-family:'Baloo 2';font-weight:800;color:var(--coral);font-size:1.15rem;margin-bottom:14px;}
+  .share-card-preview{width:100%;border-radius:var(--r-md);box-shadow:var(--soft-sm);display:block;margin-bottom:16px;}
+  .share-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .share-btn{flex:1 1 130px;border:none;border-radius:999px;padding:12px 16px;font-family:'Baloo 2';font-weight:700;font-size:.92rem;cursor:pointer;transition:.2s;}
+  .share-btn.primary{background:var(--coral);color:#fff;}
+  .share-btn.secondary{background:var(--cream-white);color:var(--ink-deep);border:2px solid var(--pink-soft);}
+  .share-btn:hover{transform:translateY(-2px);}
+  .share-close{margin-top:14px;background:none;border:none;color:var(--ink);font-size:.85rem;cursor:pointer;text-decoration:underline;}
+  .share-tip{font-size:.78rem;color:var(--ink);margin-top:12px;line-height:1.5;}
 
   @media(max-width:760px){
     .hero{grid-template-columns:1fr;gap:24px;text-align:center;}
@@ -83,19 +112,259 @@
     </div>
   </section>
 
-  <section class="coming">
-    <div class="cs-card">
-      <h2 class="cs-title">Coming Soon 🐰</h2>
-      <p class="cs-sub">Trang fan dành cho Duro đang được hoàn thiện.<br>Hẹn gặp lại bạn thật sớm nhé! 💛</p>
-      <div class="cs-dots"><span></span><span></span><span></span></div>
-      <a class="cs-link" href="pray.html">🕯️ Cầu nguyện cho Gen.G →</a>
+  <section class="maker">
+    <div class="cs-card maker-card">
+      <h2 class="cs-title">Tạo ảnh chúc mừng Duro 🎀</h2>
+      <p class="cs-sub">Chọn khung, tải ảnh lên rồi kéo/phóng to cho vừa khung, sau đó tạo ảnh để tải về hoặc chia sẻ nhé! 🐰</p>
+
+      <!-- chọn frame -->
+      <div class="frame-pick">
+        <button class="frame-opt active" data-frame="1" onclick="pickFrame(1)">🖼️ Khung 1 ảnh</button>
+        <button class="frame-opt" data-frame="3" onclick="pickFrame(3)">🖼️🖼️🖼️ Khung 3 ảnh</button>
+      </div>
+
+      <!-- khu chỉnh ảnh -->
+      <div class="maker-stage" id="makerStage"></div>
+
+      <div class="maker-actions">
+        <button class="cs-link" onclick="generateImage()">✨ Tạo ảnh</button>
+      </div>
     </div>
   </section>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="share-overlay" id="shareOverlay">
+  <div class="share-modal">
+    <h3>🎉 Ảnh chúc mừng Duro của bạn!</h3>
+    <img class="share-card-preview" id="sharePreview" alt="Ảnh đã tạo">
+    <div class="share-actions">
+      <button class="share-btn primary" onclick="downloadCard()">⬇️ Tải ảnh</button>
+      <button class="share-btn secondary" onclick="systemShare()">📲 Chia sẻ</button>
+    </div>
+    <p class="share-tip">Tải ảnh về rồi khoe lên Threads / Facebook / Instagram nhé! Trên điện thoại bấm "Chia sẻ" để gửi thẳng 🐰</p>
+    <button class="share-close" onclick="closeShare()">Đóng</button>
+  </div>
 </div>
 
 <footer>
   Fan-made page · không liên kết chính thức với Gen.G hay LCK 🐰💛
 </footer>
 
+<script>
+  // ===== ĐỊNH NGHĨA FRAME =====
+  // toạ độ ô tính theo tỉ lệ % của ảnh frame (từ phân tích ảnh thật)
+  const FRAMES = {
+    1: { src:'frame1.png', w:1280, h:1920, slots:[
+      {x:200/1280, y:321/1920, w:(1279-200)/1280, h:(1558-321)/1920}
+    ]},
+    3: { src:'frame3.png', w:1080, h:1920, slots:[
+      {x:64/1080, y:207/1920,  w:(1011-64)/1080, h:(648-207)/1920},
+      {x:64/1080, y:696/1920,  w:(1011-64)/1080, h:(1230-696)/1920},
+      {x:64/1080, y:1278/1920, w:(1011-64)/1080, h:(1782-1278)/1920}
+    ]}
+  };
+
+  let curFrame = 1;
+  let slotData = [];   // {img, scale, x, y, naturalW, naturalH} cho mỗi ô
+
+  function pickFrame(n){
+    curFrame = n;
+    document.querySelectorAll('.frame-opt').forEach(b=>{
+      b.classList.toggle('active', +b.getAttribute('data-frame')===n);
+    });
+    buildStage();
+  }
+
+  function buildStage(){
+    const fr = FRAMES[curFrame];
+    const stage = document.getElementById('makerStage');
+    // tỉ lệ khung hình
+    stage.style.aspectRatio = fr.w+' / '+fr.h;
+    stage.innerHTML = '';
+    slotData = fr.slots.map(()=>null);
+
+    // tạo từng ô ảnh
+    fr.slots.forEach((s,i)=>{
+      const slot = document.createElement('div');
+      slot.className = 'photo-slot empty';
+      slot.style.left = (s.x*100)+'%';
+      slot.style.top = (s.y*100)+'%';
+      slot.style.width = (s.w*100)+'%';
+      slot.style.height = (s.h*100)+'%';
+      slot.dataset.idx = i;
+      slot.innerHTML = '<div class="slot-hint">📷 Bấm để tải ảnh '+(fr.slots.length>1?(i+1):'')+'</div>'
+        + '<div class="slot-zoom"><button onclick="zoomSlot(event,'+i+',-1)">−</button><button onclick="zoomSlot(event,'+i+',1)">+</button></div>';
+      // bấm vào ô trống để tải ảnh
+      slot.addEventListener('click', (e)=>{
+        if(slot.classList.contains('empty')){ openFilePicker(i); }
+      });
+      stage.appendChild(slot);
+    });
+
+    // frame phủ lên trên
+    const ov = document.createElement('img');
+    ov.className = 'frame-overlay'; ov.src = fr.src; ov.alt='frame';
+    stage.appendChild(ov);
+  }
+
+  let pickingIdx = 0;
+  function openFilePicker(i){
+    pickingIdx = i;
+    fileInput.click();
+  }
+  const fileInput = document.createElement('input');
+  fileInput.type='file'; fileInput.accept='image/*'; fileInput.style.display='none';
+  document.body.appendChild(fileInput);
+  fileInput.addEventListener('change', e=>{
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = ()=>{ placeImage(pickingIdx, img); };
+    img.src = url;
+    fileInput.value='';
+  });
+
+  function placeImage(i, img){
+    const stage = document.getElementById('makerStage');
+    const slot = stage.querySelector('.photo-slot[data-idx="'+i+'"]');
+    const sw = slot.clientWidth, sh = slot.clientHeight;
+    // scale để ảnh phủ kín ô (cover)
+    const scale = Math.max(sw/img.naturalWidth, sh/img.naturalHeight);
+    const dw = img.naturalWidth*scale, dh = img.naturalHeight*scale;
+    const x = (sw-dw)/2, y = (sh-dh)/2;   // canh giữa
+    slotData[i] = {img, scale, x, y, baseScale:scale};
+
+    slot.classList.remove('empty'); slot.classList.add('filled');
+    // xóa hint, thêm img
+    slot.querySelector('.slot-hint')?.remove();
+    let el = slot.querySelector('img');
+    if(!el){ el = document.createElement('img'); slot.insertBefore(el, slot.firstChild); }
+    el.src = img.src;
+    renderSlot(i);
+    enableDrag(slot, i);
+  }
+
+  function renderSlot(i){
+    const stage = document.getElementById('makerStage');
+    const slot = stage.querySelector('.photo-slot[data-idx="'+i+'"]');
+    const d = slotData[i]; if(!d) return;
+    const el = slot.querySelector('img');
+    const dw = d.img.naturalWidth*d.scale, dh = d.img.naturalHeight*d.scale;
+    el.style.width = dw+'px'; el.style.height = dh+'px';
+    el.style.transform = 'translate('+d.x+'px,'+d.y+'px)';
+  }
+
+  function zoomSlot(e, i, dir){
+    e.stopPropagation();
+    const d = slotData[i]; if(!d) return;
+    const stage = document.getElementById('makerStage');
+    const slot = stage.querySelector('.photo-slot[data-idx="'+i+'"]');
+    const sw = slot.clientWidth, sh = slot.clientHeight;
+    const cx = sw/2, cy = sh/2;
+    // zoom quanh tâm ô
+    const factor = dir>0 ? 1.12 : 1/1.12;
+    const newScale = Math.max(d.baseScale*0.5, d.scale*factor);
+    // giữ tâm
+    d.x = cx - (cx - d.x)*(newScale/d.scale);
+    d.y = cy - (cy - d.y)*(newScale/d.scale);
+    d.scale = newScale;
+    clampSlot(i, sw, sh);
+    renderSlot(i);
+  }
+
+  function clampSlot(i, sw, sh){
+    const d = slotData[i]; if(!d) return;
+    const dw = d.img.naturalWidth*d.scale, dh = d.img.naturalHeight*d.scale;
+    // không để lộ mép (ảnh luôn phủ kín ô)
+    if(dw>=sw){ d.x = Math.min(0, Math.max(sw-dw, d.x)); } else { d.x=(sw-dw)/2; }
+    if(dh>=sh){ d.y = Math.min(0, Math.max(sh-dh, d.y)); } else { d.y=(sh-dh)/2; }
+  }
+
+  function enableDrag(slot, i){
+    let dragging=false, sx=0, sy=0, ox=0, oy=0;
+    const start=(px,py)=>{ const d=slotData[i]; if(!d)return; dragging=true; sx=px; sy=py; ox=d.x; oy=d.y; slot.style.cursor='grabbing'; };
+    const move=(px,py)=>{
+      if(!dragging) return; const d=slotData[i]; if(!d)return;
+      d.x = ox+(px-sx); d.y = oy+(py-sy);
+      clampSlot(i, slot.clientWidth, slot.clientHeight);
+      renderSlot(i);
+    };
+    const end=()=>{ dragging=false; slot.style.cursor='grab'; };
+    slot.addEventListener('mousedown', e=>{ if(slotData[i]) start(e.clientX,e.clientY); });
+    window.addEventListener('mousemove', e=>move(e.clientX,e.clientY));
+    window.addEventListener('mouseup', end);
+    slot.addEventListener('touchstart', e=>{ if(slotData[i]&&e.touches[0]){ start(e.touches[0].clientX,e.touches[0].clientY);} }, {passive:true});
+    slot.addEventListener('touchmove', e=>{ if(e.touches[0]){ move(e.touches[0].clientX,e.touches[0].clientY); e.preventDefault();} }, {passive:false});
+    slot.addEventListener('touchend', end);
+  }
+
+  // ===== TẠO ẢNH (canvas) =====
+  let shareBlob = null;
+  function generateImage(){
+    const fr = FRAMES[curFrame];
+    const stage = document.getElementById('makerStage');
+    const stageW = stage.clientWidth, stageH = stage.clientHeight;
+    const ratio = fr.w / stageW;   // px ảnh thật / px màn hình
+
+    const cv = document.createElement('canvas');
+    cv.width = fr.w; cv.height = fr.h;
+    const ctx = cv.getContext('2d');
+
+    // nền (phòng ô trống)
+    ctx.fillStyle = '#f3e6e6'; ctx.fillRect(0,0,fr.w,fr.h);
+
+    // vẽ ảnh fan trong từng ô (layer dưới)
+    fr.slots.forEach((s,i)=>{
+      const d = slotData[i]; if(!d) return;
+      const slot = stage.querySelector('.photo-slot[data-idx="'+i+'"]');
+      const slotX = s.x*fr.w, slotY = s.y*fr.h, slotW = s.w*fr.w, slotH = s.h*fr.h;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(slotX, slotY, slotW, slotH); ctx.clip();
+      // toạ độ ảnh: d.x,d.y,scale tính theo px màn hình -> nhân ratio
+      const dw = d.img.naturalWidth*d.scale*ratio;
+      const dh = d.img.naturalHeight*d.scale*ratio;
+      const dx = slotX + d.x*ratio;
+      const dy = slotY + d.y*ratio;
+      ctx.drawImage(d.img, dx, dy, dw, dh);
+      ctx.restore();
+    });
+
+    // vẽ frame lên trên (layer trên)
+    const draw = ()=>{
+      ctx.drawImage(frameImg, 0, 0, fr.w, fr.h);
+      cv.toBlob(b=>{
+        shareBlob = b;
+        document.getElementById('sharePreview').src = cv.toDataURL('image/png');
+        document.getElementById('shareOverlay').classList.add('show');
+      }, 'image/png');
+    };
+    const frameImg = new Image();
+    frameImg.onload = draw;
+    frameImg.onerror = ()=>{ alert('Chưa tải được khung. Hãy chắc bạn đã upload '+fr.src+' lên GitHub nhé!'); };
+    frameImg.src = fr.src;
+  }
+
+  function closeShare(){ document.getElementById('shareOverlay').classList.remove('show'); }
+  function downloadCard(){
+    if(!shareBlob) return;
+    const a=document.createElement('a'); a.href=URL.createObjectURL(shareBlob);
+    a.download='duro-anniversary.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  }
+  async function systemShare(){
+    if(shareBlob && navigator.canShare){
+      const file=new File([shareBlob],'duro-anniversary.png',{type:'image/png'});
+      if(navigator.canShare({files:[file]})){
+        try{ await navigator.share({files:[file],title:'Chúc mừng Duro 🐰',text:'Happy 4th Anniversary Duro! 🎀'}); return; }catch(e){ return; }
+      }
+    }
+    alert('Trên máy tính, hãy bấm "Tải ảnh" rồi đăng lên mạng xã hội nhé! 🐰');
+  }
+  document.getElementById('shareOverlay').addEventListener('click', e=>{ if(e.target.id==='shareOverlay') closeShare(); });
+
+  // khởi tạo
+  buildStage();
+</script>
 </body>
 </html>
