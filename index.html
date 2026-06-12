@@ -54,6 +54,11 @@
   .cs-link:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(252,165,165,.6);}
 
   footer{text-align:center;padding:30px 20px 50px;color:var(--ink);font-size:.85rem;}
+  /* chuyển tiếp sang pray */
+  .to-pray{padding:20px 0 40px;}
+  .pray-card{max-width:560px;margin:0 auto;background:linear-gradient(150deg,var(--yellow-cream),var(--pink-soft));border-radius:var(--r-lg);box-shadow:var(--soft);padding:36px 28px;text-align:center;}
+  .pray-emoji{font-size:2rem;margin-bottom:10px;}
+  .pray-text{font-family:'Baloo 2';font-weight:800;font-size:1.4rem;color:var(--ink-deep);margin-bottom:18px;}
   /* ===== MAKER ===== */
   .maker-card{max-width:560px;}
   .frame-pick{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 22px;}
@@ -83,6 +88,13 @@
   .share-btn:hover{transform:translateY(-2px);}
   .share-close{margin-top:14px;background:none;border:none;color:var(--ink);font-size:.85rem;cursor:pointer;text-decoration:underline;}
   .share-tip{font-size:.78rem;color:var(--ink);margin-top:12px;line-height:1.5;}
+  .share-divider{display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:var(--ink);font-size:.8rem;}
+  .share-divider::before,.share-divider::after{content:"";flex:1;height:1px;background:var(--pink-soft);}
+  .social-row{display:flex;gap:12px;justify-content:center;}
+  .social-btn{width:50px;height:50px;border-radius:50%;border:2px solid var(--pink-soft);background:var(--cream-white);color:var(--ink-deep);cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;}
+  .social-btn:hover{transform:translateY(-3px);border-color:var(--coral);color:var(--coral);}
+  .social-btn svg{width:22px;height:22px;fill:currentColor;}
+  .copy-ok{font-size:.78rem;color:var(--coral);margin-top:8px;height:16px;}
 
   @media(max-width:760px){
     .hero{grid-template-columns:1fr;gap:24px;text-align:center;}
@@ -131,6 +143,14 @@
       </div>
     </div>
   </section>
+
+  <section class="to-pray">
+    <div class="pray-card">
+      <div class="pray-emoji">🕯️🐰💛</div>
+      <p class="pray-text">Cùng chúc Gen.G chiến thắng tại đây nhé</p>
+      <a class="cs-link" href="pray.html">Đến trang cầu nguyện cho Gen.G →</a>
+    </div>
+  </section>
 </div>
 
 <!-- SHARE MODAL -->
@@ -143,6 +163,23 @@
       <button class="share-btn secondary" onclick="systemShare()">📲 Chia sẻ</button>
     </div>
     <p class="share-tip">Tải ảnh về rồi khoe lên Threads / Facebook / Instagram nhé! Trên điện thoại bấm "Chia sẻ" để gửi thẳng 🐰</p>
+
+    <div class="share-divider">hoặc chia sẻ link trang</div>
+    <div class="social-row">
+      <button class="social-btn" title="Facebook" onclick="shareTo('facebook')">
+        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
+      </button>
+      <button class="social-btn" title="Threads" onclick="shareTo('threads')">
+        <svg viewBox="0 0 24 24"><path d="M12.2 21.5c-3 0-5.3-1-6.8-2.9C4 16.9 3.3 14.6 3.2 12v-.1c.1-2.6.8-4.9 2.2-6.6C6.9 3.4 9.2 2.4 12.2 2.4c3 0 5.3 1 6.8 2.9.9 1.1 1.5 2.4 1.8 3.9l-1.9.5c-.5-2.4-2-4.4-4.7-4.4-2.4 0-4 .9-5 2.7-.8 1.4-1 3-1 4.5s.2 3.1 1 4.5c1 1.8 2.6 2.7 5 2.7 2.2 0 3.4-.6 4.3-1.6.6-.7.9-1.6.9-2.4 0-1-.4-1.8-1.1-2.4.3-1.8-.4-3.4-2.6-3.4-1.5 0-2.7.9-2.7 2.3 0 1.3 1 2 2.2 2 .5 0 .9-.1 1.2-.3.2 1-.4 1.6-1.6 1.6-1.8 0-2.7-1.4-2.7-3.2 0-2.3 1.7-3.9 4.3-3.9 3 0 4.6 2 4.5 4.7 0 .2 0 .4-.1.7.7.7 1.1 1.7 1.1 2.9 0 1.4-.5 2.7-1.5 3.7-1.2 1.3-3 2-5.5 2z"/></svg>
+      </button>
+      <button class="social-btn" title="X (Twitter)" onclick="shareTo('x')">
+        <svg viewBox="0 0 24 24"><path d="M18.2 2.3h3.3l-7.2 8.3 8.5 11.1h-6.6l-5.2-6.8-6 6.8H1.7l7.7-8.8L1.3 2.3H8l4.7 6.2 5.5-6.2zm-1.2 17.5h1.8L7.1 4.1H5.2l11.8 15.7z"/></svg>
+      </button>
+      <button class="social-btn" title="Sao chép link" onclick="copyLink()">
+        <svg viewBox="0 0 24 24"><path d="M3.9 12a3.1 3.1 0 013.1-3.1h4V7H7a5 5 0 100 10h4v-1.9H7A3.1 3.1 0 013.9 12zM8 13h8v-2H8v2zm9-6h-4v1.9h4a3.1 3.1 0 010 6.2h-4V17h4a5 5 0 000-10z"/></svg>
+      </button>
+    </div>
+    <p class="copy-ok" id="copyOk"></p>
     <button class="share-close" onclick="closeShare()">Đóng</button>
   </div>
 </div>
@@ -362,6 +399,23 @@
     alert('Trên máy tính, hãy bấm "Tải ảnh" rồi đăng lên mạng xã hội nhé! 🐰');
   }
   document.getElementById('shareOverlay').addEventListener('click', e=>{ if(e.target.id==='shareOverlay') closeShare(); });
+
+  // chia sẻ LINK trang tới mạng xã hội (để ai muốn cũng vào tạo ảnh)
+  const SITE_URL = 'https://durabbit.github.io';
+  const SHARE_TEXT = 'Mình vừa tạo ảnh chúc mừng 4 năm Duro! Bạn cũng thử nhé 🐰🎀 #DURO #GENG';
+  function shareTo(net){
+    const u = encodeURIComponent(SITE_URL);
+    const t = encodeURIComponent(SHARE_TEXT);
+    let url='';
+    if(net==='facebook') url='https://www.facebook.com/sharer/sharer.php?u='+u;
+    else if(net==='threads') url='https://www.threads.net/intent/post?text='+t+'%20'+u;
+    else if(net==='x') url='https://twitter.com/intent/tweet?text='+t+'&url='+u;
+    if(url) window.open(url,'_blank','noopener,width=600,height=600');
+  }
+  function copyLink(){
+    const done=()=>{ const el=document.getElementById('copyOk'); el.textContent='✓ Đã sao chép link!'; setTimeout(()=>el.textContent='',2500); };
+    if(navigator.clipboard){ navigator.clipboard.writeText(SITE_URL).then(done).catch(done); } else done();
+  }
 
   // khởi tạo
   buildStage();
