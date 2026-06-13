@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DURO ♡ Coming Soon</title>
+<title>DURO ♡ 4th Anniversary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,7 +26,8 @@
   .wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:2;}
 
   /* nav */
-  nav{display:flex;align-items:center;justify-content:center;padding:26px 0;}
+  nav{display:flex;align-items:center;justify-content:center;gap:14px;padding:26px 20px;position:relative;}
+  nav .lang-btn{position:absolute;right:20px;}
   .logo{font-family:'Baloo 2';font-weight:800;font-size:1.6rem;color:var(--coral);display:flex;align-items:center;gap:8px;}
 
   /* hero */
@@ -35,6 +36,8 @@
   .hero-img img{width:100%;height:100%;object-fit:cover;object-position:top center;}
   .hero-right{text-align:left;}
   .badge{display:inline-block;background:var(--yellow-bright);color:var(--ink-deep);font-family:'Baloo 2';font-weight:700;font-size:.9rem;letter-spacing:1.5px;padding:11px 26px;border-radius:999px;box-shadow:var(--soft-yellow);margin-bottom:22px;}
+  .lang-btn{border:2px solid var(--coral);background:var(--white);color:var(--coral);font-family:'Baloo 2';font-weight:700;font-size:.85rem;padding:7px 16px;border-radius:999px;cursor:pointer;transition:.2s;}
+  .lang-btn:hover{background:var(--coral);color:#fff;}
   .bigname{font-family:'Baloo 2';font-weight:800;font-size:clamp(4rem,11vw,7rem);color:var(--coral);line-height:.9;text-shadow:0 6px 0 #fbbcbc,0 12px 22px rgba(252,165,165,.4);}
   .kr-name{display:block;font-family:'Baloo 2';font-weight:800;font-size:clamp(2.4rem,6vw,3.4rem);color:#fff;-webkit-text-stroke:6px var(--coral);paint-order:stroke fill;text-shadow:0 5px 0 rgba(252,165,165,.4);transform:rotate(-8deg);margin:14px 0 6px 10px;line-height:1;}
   .heart-row{font-size:1.4rem;margin:10px 0 14px;}
@@ -108,6 +111,7 @@
 <div class="wrap">
   <nav>
     <div class="logo">🐰 DURO</div>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">🌐 EN</button>
   </nav>
 
   <section class="hero">
@@ -126,20 +130,20 @@
 
   <section class="maker">
     <div class="cs-card maker-card">
-      <h2 class="cs-title">Tạo ảnh chúc mừng Duro 🎀</h2>
-      <p class="cs-sub">Chọn khung, tải ảnh lên rồi kéo/phóng to cho vừa khung, sau đó tạo ảnh để tải về hoặc chia sẻ nhé! 🐰</p>
+      <h2 class="cs-title" data-vi="Tạo ảnh chúc mừng Duro 🎀" data-en="Make a Duro celebration photo 🎀">Tạo ảnh chúc mừng Duro 🎀</h2>
+      <p class="cs-sub" data-vi="Chọn khung, tải ảnh lên rồi kéo/phóng to cho vừa khung, sau đó tạo ảnh để tải về hoặc chia sẻ nhé! 🐰" data-en="Pick a frame, upload your photo then drag/zoom to fit, then create the image to download or share! 🐰">Chọn khung, tải ảnh lên rồi kéo/phóng to cho vừa khung, sau đó tạo ảnh để tải về hoặc chia sẻ nhé! 🐰</p>
 
       <!-- chọn frame -->
       <div class="frame-pick">
-        <button class="frame-opt active" data-frame="1" onclick="pickFrame(1)">🖼️ Khung 1 ảnh</button>
-        <button class="frame-opt" data-frame="3" onclick="pickFrame(3)">🖼️🖼️🖼️ Khung 3 ảnh</button>
+        <button class="frame-opt active" data-frame="1" onclick="pickFrame(1)" data-vi="🖼️ Khung 1 ảnh" data-en="🖼️ 1-photo frame">🖼️ Khung 1 ảnh</button>
+        <button class="frame-opt" data-frame="3" onclick="pickFrame(3)" data-vi="🖼️🖼️🖼️ Khung 3 ảnh" data-en="🖼️🖼️🖼️ 3-photo frame">🖼️🖼️🖼️ Khung 3 ảnh</button>
       </div>
 
       <!-- khu chỉnh ảnh -->
       <div class="maker-stage" id="makerStage"></div>
 
       <div class="maker-actions">
-        <button class="cs-link" onclick="generateImage()">✨ Tạo ảnh</button>
+        <button class="cs-link" onclick="generateImage()" data-vi="✨ Tạo ảnh" data-en="✨ Create image">✨ Tạo ảnh</button>
       </div>
     </div>
   </section>
@@ -147,8 +151,8 @@
   <section class="to-pray">
     <div class="pray-card">
       <div class="pray-emoji">🕯️🐰💛</div>
-      <p class="pray-text">Cùng chúc Gen.G chiến thắng tại đây nhé</p>
-      <a class="cs-link" href="pray.html">Đến trang cầu nguyện cho Gen.G →</a>
+      <p class="pray-text" data-vi="Cùng chúc Gen.G chiến thắng tại đây nhé" data-en="Come cheer Gen.G to victory here">Cùng chúc Gen.G chiến thắng tại đây nhé</p>
+      <a class="cs-link" href="pray.html" data-vi="Đến trang cầu nguyện cho Gen.G →" data-en="Go to the Gen.G prayer page →">Đến trang cầu nguyện cho Gen.G →</a>
     </div>
   </section>
 </div>
@@ -156,15 +160,15 @@
 <!-- SHARE MODAL -->
 <div class="share-overlay" id="shareOverlay">
   <div class="share-modal">
-    <h3>🎉 Ảnh chúc mừng Duro của bạn!</h3>
+    <h3 data-vi="🎉 Ảnh chúc mừng Duro của bạn!" data-en="🎉 Your Duro celebration photo!">🎉 Ảnh chúc mừng Duro của bạn!</h3>
     <img class="share-card-preview" id="sharePreview" alt="Ảnh đã tạo">
     <div class="share-actions">
-      <button class="share-btn primary" onclick="downloadCard()">⬇️ Tải ảnh</button>
-      <button class="share-btn secondary" onclick="systemShare()">📲 Chia sẻ</button>
+      <button class="share-btn primary" onclick="downloadCard()" data-vi="⬇️ Tải ảnh" data-en="⬇️ Download">⬇️ Tải ảnh</button>
+      <button class="share-btn secondary" onclick="systemShare()" data-vi="📲 Chia sẻ" data-en="📲 Share">📲 Chia sẻ</button>
     </div>
-    <p class="share-tip">Tải ảnh về rồi khoe lên Threads / Facebook / Instagram nhé! Trên điện thoại bấm "Chia sẻ" để gửi thẳng 🐰</p>
+    <p class="share-tip" data-vi='Tải ảnh về rồi khoe lên Threads / Facebook / Instagram nhé! Trên điện thoại bấm "Chia sẻ" để gửi thẳng 🐰' data-en='Download then post it on Threads / Facebook / Instagram! On mobile tap "Share" to send directly 🐰'>Tải ảnh về rồi khoe lên Threads / Facebook / Instagram nhé! Trên điện thoại bấm "Chia sẻ" để gửi thẳng 🐰</p>
 
-    <div class="share-divider">hoặc chia sẻ link trang</div>
+    <div class="share-divider" data-vi="hoặc chia sẻ link trang" data-en="or share the page link">hoặc chia sẻ link trang</div>
     <div class="social-row">
       <button class="social-btn" title="Facebook" onclick="shareTo('facebook')">
         <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
@@ -180,7 +184,7 @@
       </button>
     </div>
     <p class="copy-ok" id="copyOk"></p>
-    <button class="share-close" onclick="closeShare()">Đóng</button>
+    <button class="share-close" onclick="closeShare()" data-vi="Đóng" data-en="Close">Đóng</button>
   </div>
 </div>
 
@@ -230,7 +234,8 @@
       slot.style.width = (s.w*100)+'%';
       slot.style.height = (s.h*100)+'%';
       slot.dataset.idx = i;
-      slot.innerHTML = '<div class="slot-hint">📷 Bấm để tải ảnh '+(fr.slots.length>1?(i+1):'')+'</div>'
+      const hintTxt = (curLang==='en' ? '📷 Tap to upload photo ' : '📷 Bấm để tải ảnh ')+(fr.slots.length>1?(i+1):'');
+      slot.innerHTML = '<div class="slot-hint">'+hintTxt+'</div>'
         + '<div class="slot-zoom"><button onclick="zoomSlot(event,'+i+',-1)">−</button><button onclick="zoomSlot(event,'+i+',1)">+</button></div>';
       // bấm vào ô trống để tải ảnh
       slot.addEventListener('click', (e)=>{
@@ -415,6 +420,34 @@
   function copyLink(){
     const done=()=>{ const el=document.getElementById('copyOk'); el.textContent='✓ Đã sao chép link!'; setTimeout(()=>el.textContent='',2500); };
     if(navigator.clipboard){ navigator.clipboard.writeText(SITE_URL).then(done).catch(done); } else done();
+  }
+
+  // ===== CHUYỂN NGÔN NGỮ =====
+  let curLang = 'vi';
+  function toggleLang(){
+    curLang = (curLang==='vi') ? 'en' : 'vi';
+    applyLang();
+  }
+  function applyLang(){
+    document.querySelectorAll('[data-en]').forEach(el=>{
+      const t = el.getAttribute('data-'+curLang);
+      if(t!=null) el.textContent = t;
+    });
+    document.getElementById('langBtn').textContent = (curLang==='vi') ? '🌐 EN' : '🌐 VI';
+    document.documentElement.lang = curLang;
+    // cập nhật lại chữ trong các ô ảnh trống (động)
+    refreshSlotHints();
+  }
+  function refreshSlotHints(){
+    const fr = FRAMES[curFrame];
+    document.querySelectorAll('.photo-slot.empty').forEach(slot=>{
+      const i = +slot.dataset.idx;
+      const hint = slot.querySelector('.slot-hint');
+      if(hint){
+        const num = fr.slots.length>1 ? (i+1) : '';
+        hint.textContent = (curLang==='vi' ? '📷 Bấm để tải ảnh ' : '📷 Tap to upload photo ') + num;
+      }
+    });
   }
 
   // khởi tạo

@@ -211,10 +211,13 @@
     .note{width:130px;font-size:.76rem;}
     .icon-opt{width:58px;height:58px;}
   }
+  .lang-btn{position:fixed;top:14px;right:14px;z-index:200;background:var(--black);color:var(--gold-light);border:2px solid var(--gold);border-radius:999px;padding:8px 16px;font-family:'Baloo 2';font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:.2s;}
+  .lang-btn:hover{transform:translateY(-2px);}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
+<button id="langBtn" onclick="toggleLang()" class="lang-btn">🌐 EN</button>
 
 <div class="deco d1"><img src="bunny.png" alt=""></div>
 <div class="deco d2"><img src="frog.png" alt=""></div>
@@ -237,7 +240,7 @@
       <div class="hero-right">
         <div class="badge">🕯️ CẦU NGUYỆN CHO GEN.G</div>
         <h1 class="hero-title">GENGWIN</h1>
-        <p class="hero-sub">Cầu nguyện cho Gen.G<br>KiCaChoRuDuWin</p>
+        <p class="hero-sub" data-en="Pray for Gen.G<br>KiCaChoRuDuWin">Cầu nguyện cho Gen.G<br>KiCaChoRuDuWin</p>
       </div>
     </div>
   </div>
@@ -247,8 +250,8 @@
 <section id="name">
   <div class="wrap">
     <div class="name-box">
-      <label>✍️ Tên của bạn</label>
-      <input type="text" id="fanName" maxlength="24" placeholder="Vd: Lynnie">
+      <label data-en="✍️ Your name">✍️ Tên của bạn</label>
+      <input type="text" id="fanName" maxlength="24" placeholder="Vd: Lynnie" data-en-ph="e.g. Lynnie">
       <div class="hint">Tên này dùng cho cả phần thắp nến và lời chúc bên dưới</div>
     </div>
   </div>
@@ -257,7 +260,7 @@
 <!-- ===== THẮP NẾN ===== -->
 <section id="candles">
   <div class="wrap candle-wrap">
-    <div class="sec-head"><h2>Thắp nến manifest 🕯️</h2><p>Chọn icon may mắn, chọn điều cầu nguyện, rồi thắp nến nhé!</p></div>
+    <div class="sec-head"><h2 data-en="Light a candle 🕯️">Thắp nến manifest 🕯️</h2><p data-en="Pick a lucky icon, choose your wish, then light a candle!">Chọn icon may mắn, chọn điều cầu nguyện, rồi thắp nến nhé!</p></div>
     <div class="candle-board">
       <div class="candle-count" id="candleCount">0</div>
       <div class="candle-count-lbl">Ngọn nến đã thắp cho GEN.G</div>
@@ -273,13 +276,13 @@
 
       <div class="step-label">Cầu nguyện cho điều gì? <span class="step-hint">(chọn cả 2, 1, hoặc không)</span></div>
       <div class="pray-options">
-        <button class="pray-opt" data-pray="Road to MSI 2026 · Vòng 4 · GEN vs KT · 13:00 Thứ 7 13.06 (giờ VN)" onclick="togglePray(this)">
-          <span class="po-title">🏆 Road to MSI · Vòng 4</span>
-          <span class="po-sub">GEN vs KT · 13:00 T7 13.06 (giờ VN)</span>
+        <button class="pray-opt" data-pray="Road to MSI 2026 · Final Round · GEN vs T1 · 13:00 Chủ Nhật 14.06 (giờ VN) · GENG đi MSI Seed 2" data-en="Road to MSI 2026 · Final Round · GEN vs T1 · 13:00 Sun 14.06 (VN time) · GENG to MSI Seed 2" onclick="togglePray(this)">
+          <span class="po-title" data-en="🏆 Road to MSI · Final Round · GENG to MSI Seed 2">🏆 Road to MSI · Final Round · GENG đi MSI Seed 2</span>
+          <span class="po-sub" data-en="GEN vs T1 · 13:00 Sun 14.06 (VN time)">GEN vs T1 · 13:00 CN 14.06 (giờ VN)</span>
         </button>
-        <button class="pray-opt" data-pray="Mọi điều tốt đẹp nhất" onclick="togglePray(this)">
-          <span class="po-title">💛 Mọi điều tốt đẹp nhất</span>
-          <span class="po-sub">Cho sức khỏe của Gen.G & mọi trận sắp tới</span>
+        <button class="pray-opt" data-pray="Mọi điều tốt đẹp nhất" data-en="All the best wishes" onclick="togglePray(this)">
+          <span class="po-title" data-en="💛 All the best wishes">💛 Mọi điều tốt đẹp nhất</span>
+          <span class="po-sub" data-en="For Gen.G's health & every upcoming match">Cho sức khỏe của Gen.G & mọi trận sắp tới</span>
         </button>
       </div>
 
@@ -287,8 +290,8 @@
         <span class="candle-empty" id="candleEmpty">Chưa có nến nào — hãy thắp ngọn đầu tiên! 🐰</span>
       </div>
     </div>
-    <button class="btn" onclick="lightCandle()">🕯️ Thắp 10 ngọn nến</button>
-    <button class="btn btn-share" onclick="shareCandles()">📸 Tạo ảnh chia sẻ số nến của tôi</button>
+    <button class="btn" onclick="lightCandle()" data-en="🕯️ Light 10 candles">🕯️ Thắp 10 ngọn nến</button>
+    <button class="btn btn-share" onclick="shareCandles()" data-en="📸 Create my candle share image">📸 Tạo ảnh chia sẻ số nến của tôi</button>
     <div class="toast" id="candleToast">
       <div class="t1">🎉 Bạn đã thắp 10 ngọn nến — gửi thành công!</div>
       <div class="t2" id="candleToastSub">Cùng cầu chiến thắng nhé 🐰🕯️</div>
@@ -299,15 +302,15 @@
 <!-- ===== VẨY LÁ BƯỞI ===== -->
 <section id="leaf">
   <div class="wrap leaf-wrap">
-    <div class="sec-head"><h2>Vẩy lá bưởi xua vận xui 🍀</h2><p>Mỗi lần vẩy là một lần xua đi điều xui xẻo cho Gen.G!</p></div>
+    <div class="sec-head"><h2 data-en="Wave pomelo leaves to chase away bad luck 🍀">Vẩy lá bưởi xua vận xui 🍀</h2><p data-en="Each wave sweeps away the bad luck for Gen.G!">Mỗi lần vẩy là một lần xua đi điều xui xẻo cho Gen.G!</p></div>
     <div class="leaf-stage" id="leafStage">
       <img src="gengwin.jpg" alt="GEN.G" class="stage-img" id="leafImg">
     </div>
     <input type="file" id="leafUpload" accept="image/*" style="display:none" onchange="uploadLeafImg(event)">
     <div class="leaf-btns">
-      <button class="btn btn-share" onclick="document.getElementById('leafUpload').click()">📷 Tải ảnh của bạn</button>
-      <button class="btn" onclick="waveLeaf()">🍀 Vẩy lá bưởi</button>
-      <button class="btn btn-share" onclick="shareLeaf()">📸 Tạo ảnh lá bưởi</button>
+      <button class="btn btn-share" onclick="document.getElementById('leafUpload').click()" data-en="📷 Upload your photo">📷 Tải ảnh của bạn</button>
+      <button class="btn" onclick="waveLeaf()" data-en="🍀 Wave the leaves">🍀 Vẩy lá bưởi</button>
+      <button class="btn btn-share" onclick="shareLeaf()" data-en="📸 Create leaf image">📸 Tạo ảnh lá bưởi</button>
     </div>
   </div>
 </section>
@@ -315,38 +318,38 @@
 <!-- ===== LẬP KÈO (FLAG) ===== -->
 <section id="flag">
   <div class="wrap flag-wrap">
-    <div class="sec-head"><h2>Lời chúc chiến thắng 🎉</h2><p>Gửi lời chúc hoặc kèo chiến thắng của bạn đến đội tuyển nhé!</p></div>
+    <div class="sec-head"><h2 data-en="Victory wishes 🎉">Lời chúc chiến thắng 🎉</h2><p data-en="Send your wish or victory bet to the team!">Gửi lời chúc hoặc kèo chiến thắng của bạn đến đội tuyển nhé!</p></div>
     <div class="flag-form">
-      <div class="row"><label>Gửi lời chúc đến KiCaChoRuDu nhé...</label><textarea id="flagText" rows="3" maxlength="200" placeholder="Vd: Cố lên GenG, nhất định vô địch nhé!"></textarea></div>
-      <button class="btn" onclick="addFlag()">💌 Gửi lời chúc</button>
+      <div class="row"><label data-en="Send your wish to KiCaChoRuDu...">Gửi lời chúc đến KiCaChoRuDu nhé...</label><textarea id="flagText" rows="3" maxlength="200" placeholder="Vd: Cố lên GenG, nhất định vô địch nhé!" data-en-ph="e.g. Go GenG, you'll be champions!"></textarea></div>
+      <button class="btn" onclick="addFlag()" data-en="💌 Send wish">💌 Gửi lời chúc</button>
     </div>
     <div class="board-switch">
-      <button class="bsw-btn active" id="swWish" onclick="switchBoard('wish')">💌 Lời chúc</button>
-      <button class="bsw-btn" id="swCandle" onclick="switchBoard('candle')">🕯️ Thắp nến</button>
+      <button class="bsw-btn active" id="swWish" onclick="switchBoard('wish')" data-en="💌 Wishes">💌 Lời chúc</button>
+      <button class="bsw-btn" id="swCandle" onclick="switchBoard('candle')" data-en="🕯️ Candles">🕯️ Thắp nến</button>
     </div>
 
     <div class="board" id="flagBoard">
-      <div class="board-empty" id="flagEmpty">Chưa có lời chúc nào — hãy là người đầu tiên! 💌</div>
+      <div class="board-empty" id="flagEmpty" data-en="No wishes yet — be the first! 💌">Chưa có lời chúc nào — hãy là người đầu tiên! 💌</div>
     </div>
     <div class="board" id="candleBoard" style="display:none">
-      <div class="board-empty" id="candleEmptyBoard">Chưa có ai thắp nến — hãy thắp ngọn đầu tiên! 🕯️</div>
+      <div class="board-empty" id="candleEmptyBoard" data-en="No one has lit a candle yet — be the first! 🕯️">Chưa có ai thắp nến — hãy thắp ngọn đầu tiên! 🕯️</div>
     </div>
-    <p class="board-hint">Mỗi tờ giấy là một lời gửi gắm · rê chuột để đọc · kéo ngang để xem thêm →</p>
+    <p class="board-hint" data-en="Each note is a message · hover to read · scroll sideways for more →">Mỗi tờ giấy là một lời gửi gắm · rê chuột để đọc · kéo ngang để xem thêm →</p>
   </div>
 </section>
 
 <!-- ===== SHARE MODAL ===== -->
 <div class="share-overlay" id="shareOverlay">
   <div class="share-modal">
-    <h3 id="shareTitle">🎉 Chia sẻ khoảnh khắc của bạn!</h3>
+    <h3 id="shareTitle" data-en="🎉 Share your moment!">🎉 Chia sẻ khoảnh khắc của bạn!</h3>
     <img class="share-card-preview" id="sharePreview" alt="Share card">
     <div class="share-actions">
-      <button class="share-btn primary" onclick="downloadCard()">⬇️ Tải ảnh</button>
-      <button class="share-btn secondary" onclick="systemShare()">📲 Chia sẻ</button>
+      <button class="share-btn primary" onclick="downloadCard()" data-en="⬇️ Download">⬇️ Tải ảnh</button>
+      <button class="share-btn secondary" onclick="systemShare()" data-en="📲 Share">📲 Chia sẻ</button>
     </div>
-    <p class="share-tip">📸 <b>Để đăng kèm ảnh này:</b> trên điện thoại bấm "Chia sẻ" để gửi thẳng ảnh tới Facebook / Instagram / Threads. Trên máy tính, bấm "Tải ảnh" rồi đăng ảnh đó lên nhé 🐰</p>
+    <p class="share-tip" data-en='📸 <b>To post with this image:</b> on mobile tap "Share" to send it straight to Facebook / Instagram / Threads. On desktop, tap "Download" then post the image 🐰'>📸 <b>Để đăng kèm ảnh này:</b> trên điện thoại bấm "Chia sẻ" để gửi thẳng ảnh tới Facebook / Instagram / Threads. Trên máy tính, bấm "Tải ảnh" rồi đăng ảnh đó lên nhé 🐰</p>
 
-    <div class="share-divider">hoặc chia sẻ link trang</div>
+    <div class="share-divider" data-en="or share the page link">hoặc chia sẻ link trang</div>
     <div class="social-row">
       <button class="social-btn" title="Facebook" onclick="shareTo('facebook')">
         <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
@@ -362,14 +365,14 @@
       </button>
     </div>
     <p class="copy-ok" id="copyOk"></p>
-    <button class="share-close" onclick="closeShare()">Đóng</button>
+    <button class="share-close" onclick="closeShare()" data-en="Close">Đóng</button>
   </div>
 </div>
 
 <footer>
-  <p><strong>Cùng cầu chiến thắng cho GEN.G! 🐰💛</strong></p>
-  <p class="small">Trang fan tự làm · không liên kết chính thức với Gen.G hay LCK</p>
-  <p class="small">Trang web phi lợi nhuận</p>
+  <p><strong data-en="Let's pray for GEN.G to win! 🐰💛">Cùng cầu chiến thắng cho GEN.G! 🐰💛</strong></p>
+  <p class="small" data-en="Fan-made page · not officially affiliated with Gen.G or LCK">Trang fan tự làm · không liên kết chính thức với Gen.G hay LCK</p>
+  <p class="small" data-en="Non-profit website">Trang web phi lợi nhuận</p>
 </footer>
 
 <script>
@@ -446,9 +449,9 @@
     {name:'Nam', flag:'Fighting GenG! Tin tưởng các bạn 🔥'}
   ];
   const seedCandle = [
-    {name:'Lan', flag:'vừa thắp 10 ngọn nến · GEN vs KT'},
+    {name:'Lan', flag:'vừa thắp 10 ngọn nến · GEN vs T1'},
     {name:'An', flag:'vừa thắp 10 ngọn nến · Mọi điều tốt đẹp nhất'},
-    {name:'Khang', flag:'vừa thắp 10 ngọn nến · GEN vs KT'}
+    {name:'Khang', flag:'vừa thắp 10 ngọn nến · GEN vs T1'}
   ];
 
   function addFlag(){
@@ -873,6 +876,24 @@
   document.getElementById('shareOverlay').addEventListener('click', e=>{
     if(e.target.id === 'shareOverlay') closeShare();
   });
+
+  // ===== CHUYỂN NGÔN NGỮ =====
+  let curLang = 'vi';
+  document.querySelectorAll('[data-en]').forEach(el=>{ if(!el.hasAttribute('data-vi')) el.setAttribute('data-vi', el.innerHTML); });
+  document.querySelectorAll('[data-en-ph]').forEach(el=>{ el.setAttribute('data-vi-ph', el.getAttribute('placeholder')||''); });
+  function toggleLang(){
+    curLang = (curLang==='vi') ? 'en' : 'vi';
+    document.querySelectorAll('[data-en]').forEach(el=>{
+      const t = el.getAttribute('data-'+curLang);
+      if(t!=null) el.innerHTML = t;
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(el=>{
+      const t = el.getAttribute('data-'+curLang+'-ph');
+      if(t!=null) el.setAttribute('placeholder', t);
+    });
+    document.getElementById('langBtn').textContent = (curLang==='vi') ? '🌐 EN' : '🌐 VI';
+    document.documentElement.lang = curLang;
+  }
 </script>
 </body>
 </html>
